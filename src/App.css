@@ -3,11 +3,55 @@
 }
 
 .App-logo {
-  height: 40vmin;
+  height: 30vmin;
+  margin-top: 2.5vmin;
+  margin-bottom: 5vmin;
+}
+
+.nav-bar {
+  height: 100%;
+  width: 380px;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #006967;
+  overflow-x: hidden;
+  padding-top: 20px;
+
+}
+
+.nav-bar a {
+    text-decoration: none;
+    display: block;
+    margin-top: 6vmin;
+    color: white;
+    background-color: #00adaa;
+  transition: 0.3s;
+}
+
+.nav-bar a:hover {
+    border-top-left-radius: 50px;
+    border-top-right-radius: 50px;
+    color: #111;
+    background-color: #EEE;
+    font-style: oblique; 
+}
+
+
+#root > div > header > p {
+    font-family: 'Raleway', sans-serif;
+    letter-spacing: 10px;
+    color: darkslategray;
+    font-weight: 900;
+}
+
+.sign-in-logo {
+    height: 20vmin;
 }
 
 .App-header {
-  background-color: #282c34;
+  background-color: #99cfcf;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
