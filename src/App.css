@@ -21,7 +21,18 @@
 
 }
 
-.nav-bar a {
+.disabled_tabs {
+    text-decoration: none;
+    display: block;
+    margin-top: 6vmin;
+    color: #336665;
+    background-color: #8db5b4;
+  transition: 0.3s;
+    
+    cursor: not-allowed;
+}
+
+.active_tabs {
     text-decoration: none;
     display: block;
     margin-top: 6vmin;
@@ -30,7 +41,7 @@
   transition: 0.3s;
 }
 
-.nav-bar a:hover {
+.active_tabs:hover {
     border-top-left-radius: 50px;
     border-top-right-radius: 50px;
     color: #111;
