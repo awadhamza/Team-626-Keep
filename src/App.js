@@ -21,19 +21,24 @@ class App extends Component{
     lockTabs() {
         var collection = document.getElementsByClassName('active_tabs');
         if(collection != null){
-            /*alert("INITIAL COLL. LENGTH = " + collection.length);
-            */
             for(var i = collection.length - 1; i >= 0; i--){
-                //alert(i + " " + collection[i].className.toString());
-                //alert(collection[i].textContent);
                 collection[i].className = "disabled_tabs";
             }
             
             
-            window.onload = function(){
-                document.getElementById("1_act").innerHTML = "<i class=\"fas fa-lock\"></i> My Notes";
-                document.getElementById("2_act").innerHTML = "<i class=\"fas fa-lock\"></i> Create Note";
-                document.getElementById("3_act").innerHTML = "<i class=\"fas fa-lock\"></i> Archives ";
+            if(document.getElementById("1_act") != null){
+                    //alert("1");
+                    document.getElementById("1_act").innerHTML = "<i class=\"fas fa-lock\"></i> My Notes";
+                    document.getElementById("2_act").innerHTML = "<i class=\"fas fa-lock\"></i> Create Note";
+                    document.getElementById("3_act").innerHTML = "<i class=\"fas fa-lock\"></i> Archives ";
+            }
+            else{
+                window.onload = function(){
+                    //alert("2");
+                    document.getElementById("1_act").innerHTML = "<i class=\"fas fa-lock\"></i> My Notes";
+                    document.getElementById("2_act").innerHTML = "<i class=\"fas fa-lock\"></i> Create Note";
+                    document.getElementById("3_act").innerHTML = "<i class=\"fas fa-lock\"></i> Archives ";
+                }
             }
             
             //        collection[2].className = "disabled_tabs";
@@ -126,11 +131,13 @@ class App extends Component{
             : <button onClick={signInWithGoogle}>Sign in with Google</button>
         }
         
-        {/*
-        <div> TEST BUTTONS </div>
-        <button onClick={this.lockTabs}>LOCK TABS</button>
-        <button onClick={this.unlockTabs}>UNLOCK TABS</button>
-        */}
+        {
+//        <React.Fragment>
+//            <div> TEST BUTTONS </div>
+//            <button onClick={this.lockTabs}>LOCK TABS</button>
+//            <button onClick={this.unlockTabs}>UNLOCK TABS</button>
+//        </React.Fragment>
+        }
       </header>
     </div>
   );
