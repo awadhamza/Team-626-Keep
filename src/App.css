@@ -8,61 +8,8 @@
   margin-bottom: 5vmin;
 }
 
-.nav-bar {
-  height: 100%;
-  width: 380px;
-  position: fixed;
-  z-index: 1;
-  top: 0;
-  left: 0;
-  background-color: #006967;
-  overflow-x: hidden;
-  padding-top: 20px;
-
-}
-
-.disabled_tabs {
-    text-decoration: none;
-    display: block;
-    margin-top: 6vmin;
-    color: #336665;
-    background-color: #8db5b4;
-  transition: 0.3s;
-    
-    cursor: not-allowed;
-}
-
-.active_tabs {
-    text-decoration: none;
-    display: block;
-    margin-top: 6vmin;
-    color: white;
-    background-color: #00adaa;
-  transition: 0.3s;
-}
-
-.active_tabs:hover {
-    border-top-left-radius: 50px;
-    border-top-right-radius: 50px;
-    color: #111;
-    background-color: #EEE;
-    font-style: oblique; 
-}
-
-
-#root > div > header > p {
-    font-family: 'Raleway', sans-serif;
-    letter-spacing: 10px;
-    color: darkslategray;
-    font-weight: 900;
-}
-
-.sign-in-logo {
-    height: 20vmin;
-}
-
 .App-header {
-  background-color: #99cfcf;
+  background-color: white;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -73,5 +20,5 @@
 }
 
 .App-link {
-  color: #09d3ac;
+  color: #000000;
 }

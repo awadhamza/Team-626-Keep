@@ -1,0 +1,34 @@
+.HomePage {
+    text-align: center;
+  }
+  
+  .App-logo {
+    height: 30vmin;
+    margin-top: 2.5vmin;
+    margin-bottom: 5vmin;
+  }
+    
+  
+  #root > div > header > p {
+      font-family: 'Raleway', sans-serif;
+      letter-spacing: 10px;
+      color: white;
+      font-weight: 900;
+  }
+  
+  .sign-in-logo {
+      height: 20vmin;
+  }
+  
+  .App-header {
+    background-color: white;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
+  }
+  
+  
