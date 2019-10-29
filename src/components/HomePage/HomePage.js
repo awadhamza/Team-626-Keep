@@ -7,14 +7,18 @@ import logo from '../../logo.svg';
 import './HomePage.css';
 import ResponsiveDrawer from '../Sidebar/Sidebar';
 import GoogleButton from 'react-google-button'
+import NotesLayout from '../Notes/NotesLayout';
 
 
 
 class HomePage extends Component{
     render() {
   return (
-    <div className="App">
+    <div className="Toolbar">
       <ResponsiveDrawer/>
+      <div className="Notes">
+        <NotesLayout/>
+      </div>
     </div>
   );
   }

@@ -19,6 +19,8 @@ import ArchiveOutlinedIcon from '@material-ui/icons/ArchiveOutlined';
 import EmojiObjectsOutlinedIcon from '@material-ui/icons/EmojiObjectsOutlined';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import DeleteOutlineOutlinedIcon from '@material-ui/icons/DeleteOutlineOutlined';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import { Link } from 'react-router-dom';
 const drawerWidth = 240;
 
 const useStyles = makeStyles(theme => ({
@@ -154,6 +156,7 @@ export default function MiniDrawer() {
               </ListItemIcon>
               <ListItemText primary={text} />
             </ListItem>
+
           ))}
         </List>
         <Divider />
@@ -163,6 +166,17 @@ export default function MiniDrawer() {
               <ListItemIcon>
                 {index === 0 && <ArchiveOutlinedIcon />}
                 {index === 1 && <DeleteOutlineOutlinedIcon />}
+              </ListItemIcon>
+              <ListItemText primary={text} />
+            </ListItem>
+          ))}
+        </List>
+        <Divider/>
+        <List>
+          {["Logout"].map((text, index) => (
+            <ListItem button key={text}>
+              <ListItemIcon>
+                {index === 0 && <ExitToAppIcon />}
               </ListItemIcon>
               <ListItemText primary={text} />
             </ListItem>
