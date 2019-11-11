@@ -2,12 +2,9 @@ import React, { Component } from 'react';
 import withFirebaseAuth from 'react-with-firebase-auth'
 import * as firebase from 'firebase/app';
 import 'firebase/auth';
-import firebaseConfig from '../../firebaseConfig';
-import logo from '../../logo.svg';
 import './HomePage.css';
 import ResponsiveDrawer from '../Sidebar/Sidebar';
-import GoogleButton from 'react-google-button'
-import NotesLayout from '../Notes/NotesLayout';
+import Composer from '../Notes/Composer';
 
 class HomePage extends Component{
   constructor(props){
@@ -31,17 +28,18 @@ class HomePage extends Component{
       }
     })
   }
-  
+
+
     render() {
   return (
     <div>
     
     <div className="Toolbar">
       <ResponsiveDrawer/>
-      <div className="Notes">
-        <NotesLayout/>
-        {this.state.myUser}
+      <div className="Title">
+          Welcome, {this.state.myUser} !
       </div>
+      <Composer/>
     </div>
     </div>
   );

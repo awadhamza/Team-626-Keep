@@ -159,11 +159,21 @@ export default function MiniDrawer() {
         </div>
         <Divider />
         <List>
-          {["Notes", "Edit labels"].map((text, index) => (
+          {["Notes"].map((text, index) => (
             <ListItem button key={text}>
               <ListItemIcon>
                 {index === 0 && <EmojiObjectsOutlinedIcon />}
-                {index === 1 && <EditOutlinedIcon />}
+              </ListItemIcon>
+              <ListItemText primary={text} />
+            </ListItem>
+
+          ))}
+        </List>
+        <List>
+          {["Add Note"].map((text, index) => (
+            <ListItem button key={text}>
+              <ListItemIcon>
+                {index === 0 && <EditOutlinedIcon />}
               </ListItemIcon>
               <ListItemText primary={text} />
             </ListItem>
