@@ -21,6 +21,8 @@ import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import DeleteOutlineOutlinedIcon from '@material-ui/icons/DeleteOutlineOutlined';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { Link } from 'react-router-dom';
+import GoogleButton from 'react-google-button'
+import * as firebase from 'firebase'
 const drawerWidth = 240;
 
 const useStyles = makeStyles(theme => ({
@@ -96,8 +98,17 @@ export default function MiniDrawer() {
   const handleDrawerClose = () => {
     setOpen(false);
   };
-
+  
+  const signOut = async() => {
+    firebase.auth().signOut().then(function() {
+      console.log('Signed Out');
+      window.location.href = "/Login"
+    }, function(error) {
+      console.error('Sign Out Error', error);
+    });
+  }
   return (
+    
     <div className={classes.root}>
       <CssBaseline />
       <AppBar
@@ -178,7 +189,7 @@ export default function MiniDrawer() {
               <ListItemIcon>
                 {index === 0 && <ExitToAppIcon />}
               </ListItemIcon>
-              <ListItemText primary={text} />
+              <ListItemText primary={text} onClick = {signOut}/>
             </ListItem>
           ))}
         </List>

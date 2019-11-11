@@ -9,23 +9,44 @@ import GoogleButton from 'react-google-button'
 const firebaseApp = firebase.initializeApp(firebaseConfig);
 
 class Login extends Component{
-    render() {
+  constructor(props){
+    super(props)
+    this.state = {
+      userLoggedOn: false
+    }
+  }
+  
+  redirectToHome(){
+    window.location.href = "/"
+  }
+  signOutButton(signOut){
+    return(
+      <button onClick={signOut}>Sign out</button>
+    )
+  };
+  render() {
     const {
       user,
       signOut,
       signInWithGoogle,
     } = this.props;
+  
   return (
 
     <div className="App">
       <header className="App-header">
         {
           user
-            ? <button onClick={signOut}>Sign out</button>
+            ?
+            this.redirectToHome()
+            //this.signOutButton(signOut)
             : 
-            <GoogleButton
-            onClick={signInWithGoogle}
+            <GoogleButton onClick={signInWithGoogle}
             />
+
+        }
+        {this.state.userLoggedOn ?
+          window.location.href = "/": null  
         }
       </header>
     </div>
