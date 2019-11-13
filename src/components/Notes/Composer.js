@@ -41,38 +41,53 @@ const Input = ({ ...other }) => {
     );
 };
 
-function getCount() {
-    var database = firebase.database;
-    var user = firebase.auth().currentUser;
+// function getCount() {
+//     var database = firebase.database;
+//     var user = firebase.auth().currentUser;
     
-    var currRef = database().ref('notes/' + user.uid + '/');
-    
-    
-        currRef.on('value', function(snap){
-            if(snap.exists()){
-                alert(snap.numChildren());
-                return snap.numChildren();
-            }
-            else {
-                alert("REF DOESN'T EXIST");
-                return 0;
-            }
-        });
+//     var currRef = database().ref('notes/' + user.uid + '/');
     
     
-    
-}
+//         currRef.on('value', function(snap){
+//             if(snap.exists()){
+//                 alert(snap.numChildren());
+//                 return snap.numChildren();
+//             }
+//             else {
+//                 alert("REF DOESN'T EXIST");
+//                 return 0;
+//             }
+//         });
+   
+// }
   
 class Composer extends Component {
   constructor(props) {
     super(props);
-
+    this.state = {
+      myUser: ""
+    }
     let state = initialState;
     if (props.note) {
       state = noteToState(props.note);
     }
 
     this.state = state;
+  }
+
+  componentDidMount() {
+    var self = this
+    firebase.auth().onAuthStateChanged(function(user){
+      if (user) {
+        console.log(user)
+        self.setState({
+          myUser: user.uid
+        })
+      }
+      else {
+        console.log('nope')
+      }
+    })
   }
 
   handleChange = event => {
@@ -99,17 +114,14 @@ class Composer extends Component {
     if (note) {
       newNote.id = note.id;
     }
-    //onSubmit(newNote);
       
     //====================
     var database = firebase.database();
-      
-    var user = firebase.auth().currentUser;
 
-    var dbRef = database.ref('notes/' + user.uid + '/');
+    var dbRef = database.ref('notes/' + this.state.myUser + '/');
 
       // Push new note with under note count
-    database.ref('notes/' + user.uid +'/' + Date.now() +'/').set({
+    database.ref('notes/' + this.state.myUser +'/' + Date.now() +'/').set({
          noteSubject: newNote.title,
          noteDesc: newNote.description
     });
