@@ -4,7 +4,6 @@ import './Composer.css';
 import * as firebase from 'firebase/app';
 import 'firebase/auth';
 
-var count = 0;
 
 const initialState = {
   title: {
@@ -41,25 +40,6 @@ const Input = ({ ...other }) => {
     );
 };
 
-// function getCount() {
-//     var database = firebase.database;
-//     var user = firebase.auth().currentUser;
-    
-//     var currRef = database().ref('notes/' + user.uid + '/');
-    
-    
-//         currRef.on('value', function(snap){
-//             if(snap.exists()){
-//                 alert(snap.numChildren());
-//                 return snap.numChildren();
-//             }
-//             else {
-//                 alert("REF DOESN'T EXIST");
-//                 return 0;
-//             }
-//         });
-   
-// }
   
 class Composer extends Component {
   constructor(props) {
@@ -79,7 +59,6 @@ class Composer extends Component {
     var self = this
     firebase.auth().onAuthStateChanged(function(user){
       if (user) {
-        console.log(user)
         self.setState({
           myUser: user.uid
         })
@@ -115,7 +94,6 @@ class Composer extends Component {
       newNote.id = note.id;
     }
       
-    //====================
     var database = firebase.database();
 
     var dbRef = database.ref('notes/' + this.state.myUser + '/');
@@ -125,9 +103,7 @@ class Composer extends Component {
          noteSubject: newNote.title,
          noteDesc: newNote.description
     });
-    //====================
       
-    // reset
     this.setState(initialState);
   };
 

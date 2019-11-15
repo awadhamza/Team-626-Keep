@@ -5,6 +5,7 @@ import 'firebase/auth';
 import './HomePage.css';
 import ResponsiveDrawer from '../Sidebar/Sidebar';
 import Composer from '../Notes/Composer';
+import Note from '../Notes/Note';
 
 class HomePage extends Component{
   constructor(props){
@@ -18,7 +19,6 @@ class HomePage extends Component{
     var self = this
     firebase.auth().onAuthStateChanged(function(user){
       if (user) {
-        console.log(user)
         self.setState({
           myUser: user.displayName
         })
@@ -40,6 +40,7 @@ class HomePage extends Component{
           Welcome, {this.state.myUser} !
       </div>
       <Composer/>
+      <Note/>
     </div>
     </div>
   );
