@@ -170,7 +170,7 @@ export default function MiniDrawer() {
           ))}
         </List>
         <List>
-          {["Add Note"].map((text, index) => (
+          {["Edit Note"].map((text, index) => (
             <ListItem button key={text}>
               <ListItemIcon>
                 {index === 0 && <EditOutlinedIcon />}

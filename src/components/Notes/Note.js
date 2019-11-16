@@ -3,12 +3,16 @@ import './Note.css';
 import * as firebase from 'firebase/app';
 import 'firebase/auth';
 import Masonry from 'react-masonry-css'
+import DeleteIcon from '@material-ui/icons/DeleteOutlined'
+import { IconButton } from '@material-ui/core';
+
 
 class Note extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      notes: []
+      notes: [],
+      myUser: '',
     };
   };
 
@@ -38,6 +42,7 @@ class Note extends Component {
           }
           self.setState({
             notes: detail,
+            myUser: user.uid
             
           })
         });
@@ -53,22 +58,34 @@ class Note extends Component {
     return (
     <div>
       {this.state.notes.map((eachNote) => {
+        //console.log(eachNote.date)
         return (
           <Masonry
-          breakpointsCols={3}
           className="my-masonry-grid"
           columnClassName="my-masonry-grid_column">
-          <div>
+          <div className="note-list-container">
             <div className="note-title">{eachNote.subject}</div>
             <div className="note-content">{eachNote.description}</div>
+            <div className='note-footer'>
+              <IconButton onClick={this.handleDelete.bind(this, eachNote.date)}>
+                <DeleteIcon/>
+              </IconButton>
+            </div>
           </div>
           </Masonry>
+          
         )
       })}
     </div>
       
     );
   }
+
+  handleDelete(noteID) {
+    //console.log('notes/' + this.state.myUser + '/' + noteID)
+    firebase.database().ref('notes/' + this.state.myUser + '/' + noteID).remove();
+  }
+
 }
 
 export default Note;
