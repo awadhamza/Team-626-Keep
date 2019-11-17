@@ -6,6 +6,13 @@ import Masonry from 'react-masonry-css'
 import DeleteIcon from '@material-ui/icons/DeleteOutlined'
 import { IconButton } from '@material-ui/core';
 
+const Button = ({ children, ...other }) => {
+    return (
+      <button {...other}>
+        {children}
+      </button>
+    );
+  };
 
 class Note extends Component {
   constructor(props) {
@@ -15,6 +22,9 @@ class Note extends Component {
       myUser: '',
     };
   };
+
+  componentDidMount() {
+  }
 
   componentDidMount() {
     var self = this
@@ -57,6 +67,9 @@ class Note extends Component {
   render () {
     return (
     <div>
+      <p>Filter by:</p>
+      <Button onClick={this.filterRecent.bind(this)}>Most Recent</Button>
+      <Button onClick={this.filterAlphabetical.bind(this)}>Alphabetical</Button>
       {this.state.notes.map((eachNote) => {
         //console.log(eachNote.date)
         return (
@@ -80,6 +93,38 @@ class Note extends Component {
       
     );
   }
+
+  filterRecent(){
+        let temp = [];
+        temp = this.state.notes;
+
+        temp.sort(function(a, b){
+            var keyA = a.date,
+                keyB = b.date;
+            // Compare the 2 dates
+            if(keyA < keyB) return 1;
+            if(keyA > keyB) return -1;
+            return 0;
+        });
+        this.state.notes = temp;
+        this.forceUpdate();
+    }
+
+    filterAlphabetical(){
+        let temp = [];
+        temp = this.state.notes;
+
+        temp.sort(function(a, b){
+            var keyA = a.subject,
+                keyB = b.subject;
+            // Compare the 2 dates
+            if(keyA < keyB) return -1;
+            if(keyA > keyB) return 1;
+            return 0;
+        });
+        this.state.notes = temp;
+        this.forceUpdate();
+    }
 
   handleDelete(noteID) {
     //console.log('notes/' + this.state.myUser + '/' + noteID)
