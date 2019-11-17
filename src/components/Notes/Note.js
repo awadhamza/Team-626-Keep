@@ -24,9 +24,6 @@ class Note extends Component {
   };
 
   componentDidMount() {
-  }
-
-  componentDidMount() {
     var self = this
     firebase.auth().onAuthStateChanged(function(user) {
       
