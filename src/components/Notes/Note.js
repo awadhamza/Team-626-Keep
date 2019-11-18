@@ -64,9 +64,11 @@ class Note extends Component {
   render () {
     return (
     <div>
+      <div>
       <p>Filter by:</p>
       <Button onClick={this.filterRecent.bind(this)}>Most Recent</Button>
       <Button onClick={this.filterAlphabetical.bind(this)}>Alphabetical</Button>
+      </div>
       {this.state.notes.map((eachNote) => {
         //console.log(eachNote.date)
         return (

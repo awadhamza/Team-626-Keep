@@ -20,9 +20,13 @@
   padding-right: 20px;
   display: table-cell;
   vertical-align: bottom;
+  
 }
 
 .my-masonry-grid {
+  display: block;
+  width: 25%;
+  float: left;
   display: flex;
   margin-left: 30px; /* gutter size offset */
   width: auto;
