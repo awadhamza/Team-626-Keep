@@ -17,14 +17,17 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import ArchiveOutlinedIcon from '@material-ui/icons/ArchiveOutlined';
 import EmojiObjectsOutlinedIcon from '@material-ui/icons/EmojiObjectsOutlined';
-import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
+import SharedIcon from '@material-ui/icons/FolderShared';
 import DeleteOutlineOutlinedIcon from '@material-ui/icons/DeleteOutlineOutlined';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { Link } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import GoogleButton from 'react-google-button'
 import * as firebase from 'firebase'
-const drawerWidth = 240;
+import {toggleShared} from '../HomePage/HomePage'
+import {toggleNotes} from '../HomePage/HomePage'
 
+const drawerWidth = 240;
 const useStyles = makeStyles(theme => ({
   root: {
     display: "flex"
@@ -107,6 +110,7 @@ export default function MiniDrawer() {
       console.error('Sign Out Error', error);
     });
   }
+
   return (
     
     <div className={classes.root}>
@@ -164,18 +168,18 @@ export default function MiniDrawer() {
               <ListItemIcon>
                 {index === 0 && <EmojiObjectsOutlinedIcon />}
               </ListItemIcon>
-              <ListItemText primary={text} />
+              <ListItemText primary={text} onClick = {toggleNotes}/>
             </ListItem>
 
           ))}
         </List>
         <List>
-          {["Edit Note"].map((text, index) => (
+          {["Shared With Me"].map((text, index) => (
             <ListItem button key={text}>
               <ListItemIcon>
-                {index === 0 && <EditOutlinedIcon />}
+                {index === 0 && <SharedIcon />}
               </ListItemIcon>
-              <ListItemText primary={text} />
+              <ListItemText primary={text} onClick = {toggleShared}/>
             </ListItem>
 
           ))}

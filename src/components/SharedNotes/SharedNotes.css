@@ -1,0 +1,44 @@
+
+.note-title {
+  font-size: 14px;
+  padding-top: 10px;
+  font-weight: bold;
+}
+
+.note-content {
+  font-family: 'Roboto Slab', serif;
+}
+
+.note-list-container {
+  margin: 0 auto;
+  width: 240px;
+  height: 200px;
+}
+
+.note-footer {
+  padding-left: 20px;
+  padding-right: 20px;
+  display: table-cell;
+  vertical-align: bottom;
+}
+
+.my-masonry-grid {
+  display: flex;
+  margin-left: 30px; /* gutter size offset */
+  width: auto;
+}
+.my-masonry-grid_column {
+  padding-left: 30px; /* gutter size */
+  background-clip: padding-box;
+  margin-top: 20px;
+  margin-left: 40px;
+}
+
+.my-masonry-grid_column > div { /* change div to reference your elements you put in <Masonry> */
+  margin-top: 20px;
+  margin-left: 30px;
+  background: #ffffff;;
+  -moz-box-shadow: 0 0 3px #ccc;
+  -webkit-box-shadow: 0 0 3px #ccc;
+  box-shadow: 0 0 3px #ccc;
+}
