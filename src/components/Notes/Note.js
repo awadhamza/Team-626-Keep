@@ -4,7 +4,11 @@ import * as firebase from 'firebase/app';
 import 'firebase/auth';
 import Masonry from 'react-masonry-css'
 import DeleteIcon from '@material-ui/icons/DeleteOutlined'
+import ShareIcon from '@material-ui/icons/Share'
 import { IconButton } from '@material-ui/core';
+import Popup from "reactjs-popup";
+
+var share_email;
 
 const Button = ({ children, ...other }) => {
     return (
@@ -26,16 +30,10 @@ class Note extends Component {
   componentDidMount() {
     var self = this
     firebase.auth().onAuthStateChanged(function(user) {
-      
       if (user) {
 
         const userDB = firebase.database().ref('notes/' + user.uid + '/');
         userDB.on('value', (snapshot) => {
-          // let noteSub = []
-          // let noteDesc = []
-          // snapshot.forEach((child) => {
-          //   noteSub.push(child.child('noteSubject').val())
-          //   noteDesc.push(child.child('noteDesc').val())
           let notes = snapshot.val();
 
           let detail = [];
@@ -82,15 +80,44 @@ class Note extends Component {
               <IconButton onClick={this.handleDelete.bind(this, eachNote.date)}>
                 <DeleteIcon/>
               </IconButton>
+              <Popup trigger={<IconButton><ShareIcon/></IconButton>}>
+                <form onSubmit={this.handleShare.bind(this, eachNote.date)} className="input-form">
+                  <input
+                    type='text'
+                    onChange={this.myChangeHandler}
+                  />
+                  <Button>Share</Button>
+                </form>
+              </Popup>
             </div>
           </div>
           </Masonry>
-          
+
         )
       })}
     </div>
       
     );
+  }
+
+  myChangeHandler = (event) => {
+        share_email = event.target.value;
+  }
+
+  handleShare(noteID){
+    var cleanEmail = share_email.replace('.','`');
+    let userRef = firebase.database().ref('notes/' + this.state.myUser + '/');
+    firebase.database().ref('notes/' + this.state.myUser + '/' + noteID + '/').once('value').then(function(note) {
+      var note_map = JSON.parse(JSON.stringify(note));
+      var shareList = JSON.parse(note_map.sharesWith);
+      shareList.push(cleanEmail);
+      shareList = JSON.stringify(shareList);
+      userRef.child(noteID).update({'sharesWith': shareList});
+    });
+
+    firebase.database().ref('shared_notes/' + cleanEmail + '/' + this.state.myUser + '/' + noteID).set({
+      noteID: noteID
+    });
   }
 
   filterRecent(){
@@ -126,8 +153,15 @@ class Note extends Component {
     }
 
   handleDelete(noteID) {
-    //console.log('notes/' + this.state.myUser + '/' + noteID)
-    firebase.database().ref('notes/' + this.state.myUser + '/' + noteID).remove();
+    var user = this.state.myUser;
+    firebase.database().ref('notes/' + this.state.myUser + '/' + noteID + '/').once('value').then(function(note) {
+      var note_map = JSON.parse(JSON.stringify(note));
+      var shareList = JSON.parse(note_map.sharesWith);
+      for(var note in shareList){
+        firebase.database().ref('shared_notes/' + shareList[note] + '/' + user + '/' + noteID + '/').remove();
+      }
+    });
+    firebase.database().ref('notes/' + user + '/' + noteID).remove();
   }
 
 }

@@ -6,6 +6,7 @@ import './HomePage.css';
 import ResponsiveDrawer from '../Sidebar/Sidebar';
 import Composer from '../Notes/Composer';
 import Note from '../Notes/Note';
+import SharedNotes from '../SharedNotes/SharedNotes';
 
 class HomePage extends Component{
   constructor(props){
@@ -29,6 +30,10 @@ class HomePage extends Component{
     })
   }
 
+  toggleNotes(){
+     document.getElementsByClassName("Notes").style.display="block";
+     document.getElementsByClassName("SharedNotes").style.display="none";
+  }
 
     render() {
   return (
@@ -39,12 +44,25 @@ class HomePage extends Component{
       <div className="Title">
           Welcome, {this.state.myUser} !
       </div>
-      <Composer/>
-      <Note/>
+      <div className="Notes">
+        <Composer/>
+        <Note/>
+      </div>
+      <div className="SharedNotes">
+        <SharedNotes/>
+      </div>
     </div>
     </div>
   );
   }
 }
+export const toggleShared = (n) => {
+  document.getElementsByClassName("Notes")[0].style.display="none";
+  document.getElementsByClassName("SharedNotes")[0].style.display="block";
+}
 
+export const toggleNotes = (n) => {
+  document.getElementsByClassName("Notes")[0].style.display="block";
+  document.getElementsByClassName("SharedNotes")[0].style.display="none";
+}
 export default HomePage;
