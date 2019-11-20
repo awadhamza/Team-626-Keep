@@ -14,10 +14,30 @@
   
   .input-form {
     font-family: 'Roboto Slab', serif;
+    margin:0 auto;
+    text-align: center;
   }
   
   .actions {
     position: relative;
     font-size: 12px;
     text-align: right;
+  }
+
+  .close-button{
+    float: right;
+  }
+
+  .title{
+    text-align: center;
+    font-size: 30px;
+  }
+
+  .description{
+    padding: 10px;
+  }
+
+  .addIcon{
+    vertical-align: -25%;
+    transform: scale(0.75);
   }
