@@ -129,6 +129,13 @@ class Note extends Component {
           
           
       }
+
+    function textToHtml(html)
+    {
+        let arr = html.split("</br>");
+        html = arr.reduce((el, a) => el.concat(a, <br />), []);
+        return html;
+    }
       
     return (
     <div>
@@ -144,7 +151,7 @@ class Note extends Component {
           columnClassName="my-masonry-grid_column">
           <div className="note-list-container">
             <div className="note-title">{eachNote.subject}</div>
-            <div className="note-content">{eachNote.description}</div>
+            <div className="note-content">{textToHtml(eachNote.description)}</div>
             <div className="note-tags">{outputTags(eachNote.tags)}</div>
             <div className='note-footer'>
               <IconButton onClick={this.handleDelete.bind(this, eachNote.date)}>
