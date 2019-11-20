@@ -5,10 +5,13 @@ import 'firebase/auth';
 import Masonry from 'react-masonry-css'
 import DeleteIcon from '@material-ui/icons/DeleteOutlined'
 import ShareIcon from '@material-ui/icons/Share'
+import AddTagIcon from '@material-ui/icons/AddCircleOutlined'
+import DelTagIcon from '@material-ui/icons/RemoveCircleOutlined'
 import { IconButton } from '@material-ui/core';
 import Popup from "reactjs-popup";
 
 var share_email;
+var curr_tag;
 
 const Button = ({ children, ...other }) => {
     return (
@@ -27,6 +30,8 @@ class Note extends Component {
     };
   };
 
+    
+    
   componentDidMount() {
     var self = this
     firebase.auth().onAuthStateChanged(function(user) {
@@ -42,7 +47,8 @@ class Note extends Component {
             detail.push({
               date: note,
               subject: notes[note].noteSubject,
-              description: notes[note].noteDesc
+              description: notes[note].noteDesc,
+              tags: notes[note].noteTags,
             });
           }
           self.setState({
@@ -60,6 +66,70 @@ class Note extends Component {
   }
 
   render () {
+      
+    function outputTags(tags){
+          let str = "Tags: ";
+          //alert(tags.length);
+          if(tags.length <= 2){
+              return str + "N/A";
+          }
+          else {
+            return "Tags: " + tags.replace(/"/g, '').replace(/\[/g, '').replace(/\]/g, '');
+          }
+      }
+    function cutIndex(strTags){
+          if(strTags.search(',') > 0){
+              return strTags.indexOf(',');
+          }
+          return strTags.length;
+      }
+    function displayExistingTags(tags){
+          
+          var strTags = outputTags(tags);
+          var tagButtons = [];
+          
+          while(strTags.length){
+              
+              let currCut = cutIndex(strTags);
+              
+              let nextName = strTags.substr(0, currCut);
+              
+              strTags = strTags.slice(currCut + 1, strTags.length);
+              
+              tagButtons.push(nextName);
+              
+          }
+          //alert(document.getElementsByClassName("tagButtons"));
+          //document.getElementsByClassName("tagButtons")[0].innerHTML = "<button>YES</button>";
+          
+          //========
+          if(tags.length <= 2){
+              return <p>No tags to delete</p>;
+          }
+            
+          var retArr = [];
+          for(let i = 0; i < tagButtons.length; i++){
+              var txt = tagButtons[i];
+              retArr.push(<button></button>);
+              //alert(document.getElementById('tagButtons'));
+          }
+          return retArr;
+          
+          /*
+          for(let i = 0; i < arrTest.length; i++){
+              
+              for(let j = 0; j < arrTest[i].length; j++){
+                  //tagButtons.push(arrTest[i][j]);
+                  
+                  alert(arrTest[i][j]);
+              }
+              
+          }*/
+          
+          
+          
+      }
+      
     return (
     <div>
       <div>
@@ -68,7 +138,6 @@ class Note extends Component {
       <Button onClick={this.filterAlphabetical.bind(this)}>Alphabetical</Button>
       </div>
       {this.state.notes.map((eachNote) => {
-        //console.log(eachNote.date)
         return (
           <Masonry
           className="my-masonry-grid"
@@ -76,6 +145,7 @@ class Note extends Component {
           <div className="note-list-container">
             <div className="note-title">{eachNote.subject}</div>
             <div className="note-content">{eachNote.description}</div>
+            <div className="note-tags">{outputTags(eachNote.tags)}</div>
             <div className='note-footer'>
               <IconButton onClick={this.handleDelete.bind(this, eachNote.date)}>
                 <DeleteIcon/>
@@ -89,6 +159,28 @@ class Note extends Component {
                   <Button>Share</Button>
                 </form>
               </Popup>
+              <Popup trigger={<IconButton><AddTagIcon/></IconButton>}>
+                <form onSubmit={this.handleAddTag.bind(this, eachNote.date)} className="input-form">
+                  <input
+                    type='text'
+                    onChange={this.tagChangeHandler}
+                  />
+                  <Button>Add Tag</Button>
+                </form>
+              </Popup>
+              <Popup trigger={<IconButton><DelTagIcon/></IconButton>}>
+                <form onSubmit={this.handleDeleteTag.bind(this, eachNote.date, eachNote.tags)} className="input-form">
+                  <div id="tagButtons"></div>
+                    {
+                        //displayExistingTags(eachNote.tags)
+                    }
+                      <input
+                        type='text' placeholder='Confirm tag name'
+                        onChange={this.tagChangeHandler}
+                      />
+                      <Button>Remove</Button>
+                </form>
+              </Popup>
             </div>
           </div>
           </Masonry>
@@ -99,7 +191,44 @@ class Note extends Component {
       
     );
   }
+  
+  handleDeleteTag(noteID, tag){
+      //Get location of this note
+      var userRef = firebase.database().ref('notes/' + this.state.myUser + '/' );
+      
+      firebase.database().ref('notes/' + this.state.myUser + '/' + noteID + '/').once('value').then(function(note) {
+          var note_map = JSON.parse(JSON.stringify(note));
+          var tagList = JSON.parse(note_map.noteTags);
+          for( let i = 0; i < tagList.length; i++){ 
+              //alert("is: " + tagList[i] + " == " + curr_tag + "?");
+             if ( tagList[i] === curr_tag ) {
+               tagList.splice(i, 1); 
+                 
+               break;
+             }
+          }
+          tagList = JSON.stringify(tagList);
+          userRef.child(noteID).update({'noteTags': tagList});
+     });
+  }
 
+  tagChangeHandler = (event) => {
+      curr_tag = event.target.value;
+  }
+  
+  handleAddTag(noteID){
+      //Get location of this note
+      var userRef = firebase.database().ref('notes/' + this.state.myUser + '/' );
+      
+      firebase.database().ref('notes/' + this.state.myUser + '/' + noteID + '/').once('value').then(function(note) {
+          var note_map = JSON.parse(JSON.stringify(note));
+          var tagList = JSON.parse(note_map.noteTags);
+          tagList.push(curr_tag);
+          tagList = JSON.stringify(tagList);
+          userRef.child(noteID).update({'noteTags': tagList});
+     });
+  }
+  
   myChangeHandler = (event) => {
         share_email = event.target.value;
   }
@@ -136,7 +265,7 @@ class Note extends Component {
         this.forceUpdate();
     }
 
-    filterAlphabetical(){
+  filterAlphabetical(){
         let temp = [];
         temp = this.state.notes;
 
