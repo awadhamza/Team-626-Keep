@@ -6,7 +6,16 @@
 }
 
 .note-content {
+  text-align: left;
+  padding: 10%;
+  word-wrap: break-word;
+  overflow-y: auto;
+  height: 100px;
   font-family: 'Roboto Slab', serif;
+}
+
+.note-tags{
+  padding-top: 10px;
 }
 
 .note-list-container {
