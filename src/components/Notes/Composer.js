@@ -98,10 +98,10 @@ class Composer extends Component {
 
     var dbRef = database.ref('notes/' + this.state.myUser + '/');
 
-      // Push new note with under note count
     database.ref('notes/' + this.state.myUser +'/' + Date.now() +'/').set({
          noteSubject: newNote.title,
          noteDesc: newNote.description,
+         noteTags: "[]",
          sharesWith: "[]"
     });
       
