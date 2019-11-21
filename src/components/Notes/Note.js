@@ -30,6 +30,8 @@ Modal.setAppElement(document.getElementById('root'))
 
 var share_email;
 var curr_tag;
+var my_User;
+var myUserEmail;
 
 const Input = ({ ...other }) => {
     return (
@@ -44,6 +46,44 @@ const Button = ({ children, ...other }) => {
       </button>
     );
   };
+
+var handleShare = function(noteID) {
+        return function(event){
+          event.preventDefault();
+          var cleanEmail = share_email.replace('.','`');
+          var userExists = false;
+          const userDB = firebase.database().ref('users');
+          userDB.on('value', (snapshot) => {
+            let users = snapshot.val();
+            for(var user in users){
+              if(user == cleanEmail){
+                userExists = true;
+              }
+            }
+          });
+        if(share_email == myUserEmail){
+         alert("You cannot share with yourself");
+        }
+        else if(!userExists){
+            alert("That account does not exist");
+        }
+        else{
+          let userRef = firebase.database().ref('notes/' + my_User + '/');
+          firebase.database().ref('notes/' + my_User + '/' + noteID + '/').once('value').then(function(note) {
+            var note_map = JSON.parse(JSON.stringify(note));
+            var shareList = JSON.parse(note_map.sharesWith);
+            shareList.push(cleanEmail);
+            shareList = JSON.stringify(shareList);
+            userRef.child(noteID).update({'sharesWith': shareList});
+          });
+
+          firebase.database().ref('shared_notes/' + cleanEmail + '/' + my_User + '/' + noteID).set({
+            noteID: noteID
+          });
+          alert("Successfully shared with " + share_email);
+        }
+        }
+    };
 
 class Note extends Component {
   constructor(props) {
@@ -98,7 +138,9 @@ class Note extends Component {
     var self = this
     firebase.auth().onAuthStateChanged(function(user) {
       if (user) {
-
+        var cleanEmail = user.email.replace('.','`');
+        var userRef = firebase.database().ref('users/');
+        userRef.child(cleanEmail).update({'email': cleanEmail});
         const userDB = firebase.database().ref('notes/' + user.uid + '/');
         userDB.on('value', (snapshot) => {
           let notes = snapshot.val();
@@ -116,8 +158,9 @@ class Note extends Component {
           self.setState({
             notes: detail,
             myUser: user.uid
-            
           })
+          my_User = user.uid;
+          myUserEmail = user.email;
         });
       }
 
@@ -216,7 +259,7 @@ class Note extends Component {
               </IconButton>
               <IconButton onClick={this.handleEdit.bind(this, eachNote.date, eachNote.subject, eachNote.description)}><EditIcon/></IconButton>
               <Popup trigger={<IconButton><ShareIcon/></IconButton>}>
-                <form onSubmit={this.handleShare.bind(this, eachNote.date)} className="input-form">
+                <form onSubmit={handleShare(eachNote.date)} className="input-form">
                   <input
                     type='text'
                     onChange={this.myChangeHandler}
@@ -294,7 +337,7 @@ class Note extends Component {
   handleDeleteTag(noteID, tag){
       //Get location of this note
       var userRef = firebase.database().ref('notes/' + this.state.myUser + '/' );
-      
+
       firebase.database().ref('notes/' + this.state.myUser + '/' + noteID + '/').once('value').then(function(note) {
           var note_map = JSON.parse(JSON.stringify(note));
           var tagList = JSON.parse(note_map.noteTags);
@@ -330,22 +373,6 @@ class Note extends Component {
   
   myChangeHandler = (event) => {
         share_email = event.target.value;
-  }
-
-  handleShare(noteID){
-    var cleanEmail = share_email.replace('.','`');
-    let userRef = firebase.database().ref('notes/' + this.state.myUser + '/');
-    firebase.database().ref('notes/' + this.state.myUser + '/' + noteID + '/').once('value').then(function(note) {
-      var note_map = JSON.parse(JSON.stringify(note));
-      var shareList = JSON.parse(note_map.sharesWith);
-      shareList.push(cleanEmail);
-      shareList = JSON.stringify(shareList);
-      userRef.child(noteID).update({'sharesWith': shareList});
-    });
-
-    firebase.database().ref('shared_notes/' + cleanEmail + '/' + this.state.myUser + '/' + noteID).set({
-      noteID: noteID
-    });
   }
 
   filterRecent(){
