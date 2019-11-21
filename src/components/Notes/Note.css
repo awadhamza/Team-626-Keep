@@ -7,11 +7,12 @@
 
 .note-content {
   text-align: left;
-  padding: 10%;
+  padding: 5%;
   word-wrap: break-word;
   overflow-y: auto;
   height: 100px;
   font-family: 'Roboto Slab', serif;
+  max-width: 350px;
 }
 
 .note-tags{
@@ -19,9 +20,7 @@
 }
 
 .note-list-container {
-  margin: 0 auto;
-  width: 240px;
-  height: 200px;
+    min-height: 100%;
 }
 
 .note-footer {
@@ -30,6 +29,10 @@
   display: table-cell;
   vertical-align: bottom;
   
+}
+
+.note-footer button {
+    margin-left: 10px;
 }
 
 .my-masonry-grid {
