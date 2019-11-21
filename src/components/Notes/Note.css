@@ -10,10 +10,10 @@
   padding: 5%;
   word-wrap: break-word;
   overflow-y: auto;
-  height: 100px;
+  height: 120px;
   font-family: 'Roboto Slab', serif;
-    min-width: 340px;
-  max-width: 350px;
+  min-width: 340px;
+  max-width: 340px;
 }
 
 .note-tags{
@@ -21,8 +21,8 @@
 }
 
 .note-list-container {
-    min-height: 100%;
-    min-width: 18vw;
+    min-height: 105%;
+    min-width: 340px;
 }
 
 .note-footer {
