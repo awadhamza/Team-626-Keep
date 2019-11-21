@@ -6,7 +6,6 @@ import 'firebase/auth';
 import AddIcon from '@material-ui/icons/AddCircle'
 import CloseIcon from '@material-ui/icons/Close'
 
-
 const customStyles = {
   content : {
     top                   : '50%',

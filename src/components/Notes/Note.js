@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Modal from 'react-modal';
 import './Note.css';
 import * as firebase from 'firebase/app';
 import 'firebase/auth';
@@ -7,11 +8,34 @@ import DeleteIcon from '@material-ui/icons/DeleteOutlined'
 import ShareIcon from '@material-ui/icons/Share'
 import AddTagIcon from '@material-ui/icons/AddCircleOutlined'
 import DelTagIcon from '@material-ui/icons/RemoveCircleOutlined'
+import EditIcon from '@material-ui/icons/Edit'
 import { IconButton } from '@material-ui/core';
+import CloseIcon from '@material-ui/icons/Close'
 import Popup from "reactjs-popup";
+
+const customStyles = {
+  content : {
+    top                   : '50%',
+    left                  : '50%',
+    right                 : 'auto',
+    bottom                : 'auto',
+    width                 : '50%',
+    height                 : '50%',
+    marginRight           : '-50%',
+    transform             : 'translate(-50%, -50%)'
+  }
+};
+
+Modal.setAppElement(document.getElementById('root'))
 
 var share_email;
 var curr_tag;
+
+const Input = ({ ...other }) => {
+    return (
+      <input {...other}/>
+    );
+};
 
 const Button = ({ children, ...other }) => {
     return (
@@ -27,11 +51,49 @@ class Note extends Component {
     this.state = {
       notes: [],
       myUser: '',
+      modalIsOpen: false,
+      note_title: '',
+      note_description: '',
+      note_ID: '',
+      title: {value: ''},
+      description: {value: ''},
     };
+
+    this.openModal = this.openModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
   };
 
-    
-    
+  openModal() {
+    this.setState({modalIsOpen: true});
+  }
+
+  closeModal() {
+    this.setState({modalIsOpen: false});
+  }
+
+  handleChange = event => {
+     const fieldName = event.target.name;
+
+      this.setState({
+        [fieldName]: {
+          value: event.target.value
+        }
+      });
+    };
+
+    handleSubmit = e => {
+      e.preventDefault();
+      const { onSubmit, note } = this.props;
+      const title = this.state.title.value;
+      const description = this.state.description.value.replace(/\n/g, '</br>');
+
+      var userRef = firebase.database().ref('notes/' + this.state.myUser + '/' );
+      userRef.child(this.state.note_ID).update({'noteSubject': title});
+      userRef.child(this.state.note_ID).update({'noteDesc': description});
+
+      this.closeModal();
+    };
+
   componentDidMount() {
     var self = this
     firebase.auth().onAuthStateChanged(function(user) {
@@ -65,11 +127,19 @@ class Note extends Component {
     });
   }
 
+  handleEdit = (noteID, title, description) => {
+      this.state.note_title = title;
+      this.state.title.value = title;
+      this.state.note_description = description.split('</br>').join('\n');
+      this.state.description.value = description.split('</br>').join('\n');
+      this.state.note_ID = noteID;
+      this.openModal();
+    };
+
   render () {
       
     function outputTags(tags){
           let str = "Tags: ";
-          //alert(tags.length);
           if(tags.length <= 2){
               return str + "N/A";
           }
@@ -114,20 +184,6 @@ class Note extends Component {
               //alert(document.getElementById('tagButtons'));
           }
           return retArr;
-          
-          /*
-          for(let i = 0; i < arrTest.length; i++){
-              
-              for(let j = 0; j < arrTest[i].length; j++){
-                  //tagButtons.push(arrTest[i][j]);
-                  
-                  alert(arrTest[i][j]);
-              }
-              
-          }*/
-          
-          
-          
       }
 
     function textToHtml(html)
@@ -154,9 +210,11 @@ class Note extends Component {
             <div className="note-content">{textToHtml(eachNote.description)}</div>
             <div className="note-tags">{outputTags(eachNote.tags)}</div>
             <div className='note-footer'>
+
               <IconButton onClick={this.handleDelete.bind(this, eachNote.date)}>
                 <DeleteIcon/>
               </IconButton>
+              <IconButton onClick={this.handleEdit.bind(this, eachNote.date, eachNote.subject, eachNote.description)}><EditIcon/></IconButton>
               <Popup trigger={<IconButton><ShareIcon/></IconButton>}>
                 <form onSubmit={this.handleShare.bind(this, eachNote.date)} className="input-form">
                   <input
@@ -191,14 +249,48 @@ class Note extends Component {
             </div>
           </div>
           </Masonry>
-
         )
       })}
+      <Modal
+        isOpen={this.state.modalIsOpen}
+        onAfterOpen={this.afterOpenModal}
+        onRequestClose={this.closeModal}
+        style={customStyles}
+        contentLabel="Edit Note Modal"
+      >
+        <button onClick={this.closeModal} className="close-button"><CloseIcon/></button>
+          <br></br>
+          <br></br>
+          <form onSubmit={this.handleSubmit} className="input-form">
+            <Input
+            className="title"
+            type="text"
+            name="title"
+            placeholder="Title"
+            defaultValue={this.state.note_title}
+            onChange={this.handleChange}
+          />
+          <br></br>
+          <br></br>
+          <textarea
+            className="description"
+            name="description"
+            placeholder="Write a note..."
+            cols="75"
+            rows="6"
+            defaultValue={this.state.note_description}
+            onChange={this.handleChange}
+          />
+          <br></br>
+          <br></br>
+          <Button>Done</Button>
+        </form>
+      </Modal>
     </div>
       
     );
   }
-  
+
   handleDeleteTag(noteID, tag){
       //Get location of this note
       var userRef = firebase.database().ref('notes/' + this.state.myUser + '/' );
@@ -299,7 +391,6 @@ class Note extends Component {
     });
     firebase.database().ref('notes/' + user + '/' + noteID).remove();
   }
-
 }
 
 export default Note;
