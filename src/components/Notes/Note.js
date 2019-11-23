@@ -32,6 +32,7 @@ var share_email;
 var curr_tag;
 var my_User;
 var myUserEmail;
+var tagSearch;
 
 const Input = ({ ...other }) => {
     return (
@@ -181,10 +182,19 @@ class Note extends Component {
 
   render () {
       
+      function separateTags(tags){
+          if(tags.length <= 2){
+              return "";
+          }
+          else {
+            return "Tags: " + tags.replace(/"/g, '').replace(/\[/g, '').replace(/\]/g, '');
+          }
+      }
+      
     function outputTags(tags){
           let str = "Tags: ";
           if(tags.length <= 2){
-              return str + "N/A";
+              return "";
           }
           else {
             return "Tags: " + tags.replace(/"/g, '').replace(/\[/g, '').replace(/\]/g, '');
@@ -212,10 +222,7 @@ class Note extends Component {
               tagButtons.push(nextName);
               
           }
-          //alert(document.getElementsByClassName("tagButtons"));
-          //document.getElementsByClassName("tagButtons")[0].innerHTML = "<button>YES</button>";
-          
-          //========
+        
           if(tags.length <= 2){
               return <p>No tags to delete</p>;
           }
@@ -224,15 +231,16 @@ class Note extends Component {
           for(let i = 0; i < tagButtons.length; i++){
               var txt = tagButtons[i];
               retArr.push(<button></button>);
-              //alert(document.getElementById('tagButtons'));
           }
           return retArr;
       }
 
     function textToHtml(html)
     {
+        
         let arr = html.split("</br>");
         html = arr.reduce((el, a) => el.concat(a, <br />), []);
+
         return html;
     }
       
@@ -242,6 +250,11 @@ class Note extends Component {
       <p>Filter by:</p>
       <Button onClick={this.filterRecent.bind(this)}>Most Recent</Button>
       <Button onClick={this.filterAlphabetical.bind(this)}>Alphabetical</Button>
+      <input
+        placeholder='Search by tag'
+        type='text'
+        onChange={this.searchTagHandler.bind(this)}
+      />
       </div>
       {this.state.notes.map((eachNote) => {
         return (
@@ -332,6 +345,48 @@ class Note extends Component {
     </div>
       
     );
+  }
+
+
+  searchTagHandler = (event) => {
+      tagSearch = event.target.value.toLowerCase();
+      
+      var detail = [];
+      
+      //Get list of all notes by this user
+      var targetRef = firebase.database().ref('notes/' + this.state.myUser + '/').once('value', function(snapshot) {
+          snapshot.forEach(function(childSnapshot) {
+              //alert("checking note#: " + childSnapshot.key);
+              var noteTags = childSnapshot.val().noteTags;
+              
+              var sepTags = "";
+              
+              if(noteTags.length > 2){
+                sepTags = noteTags.replace(/"/g, '').replace(/\[/g, '').replace(/\]/g, '');
+              }
+              
+              var testArr = String(sepTags).split(',');
+              
+              // For this note, check if there is a tag with substr of tagSearch
+              for(let tag in testArr){
+                  if(testArr[tag].toLowerCase().includes(tagSearch)){
+                        detail.push({
+                          date: childSnapshot.key,
+                          subject: childSnapshot.val().noteSubject,
+                          description: childSnapshot.val().noteDesc,
+                          tags: childSnapshot.val().noteTags,
+                        });
+                      break;
+                  }
+              }
+          });
+        });
+      
+      this.state.notes = detail;
+      this.forceUpdate();
+      
+      //alert("RETURNED ARRAY: " + detail);
+      
   }
 
   handleDeleteTag(noteID, tag){

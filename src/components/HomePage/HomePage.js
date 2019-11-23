@@ -44,6 +44,7 @@ class HomePage extends Component{
       <div className="Title">
           Welcome, {this.state.myUser} !
       </div>
+      <br/>  
       <div className="Notes">
         <Composer/>
         <Note/>
