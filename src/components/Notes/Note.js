@@ -60,28 +60,28 @@ var handleShare = function(noteID) {
                 userExists = true;
               }
             }
-          });
-        if(share_email == myUserEmail){
-         alert("You cannot share with yourself");
-        }
-        else if(!userExists){
-            alert("That account does not exist");
-        }
-        else{
-          let userRef = firebase.database().ref('notes/' + my_User + '/');
-          firebase.database().ref('notes/' + my_User + '/' + noteID + '/').once('value').then(function(note) {
-            var note_map = JSON.parse(JSON.stringify(note));
-            var shareList = JSON.parse(note_map.sharesWith);
-            shareList.push(cleanEmail);
-            shareList = JSON.stringify(shareList);
-            userRef.child(noteID).update({'sharesWith': shareList});
-          });
+            if(share_email == myUserEmail){
+              alert("You cannot share with yourself");
+            }
+            else if(!userExists){
+              alert("That account does not exist");
+            }
+            else{
+              let userRef = firebase.database().ref('notes/' + my_User + '/');
+              firebase.database().ref('notes/' + my_User + '/' + noteID + '/').once('value').then(function(note) {
+                var note_map = JSON.parse(JSON.stringify(note));
+                var shareList = JSON.parse(note_map.sharesWith);
+                shareList.push(cleanEmail);
+                shareList = JSON.stringify(shareList);
+                userRef.child(noteID).update({'sharesWith': shareList});
+              });
 
-          firebase.database().ref('shared_notes/' + cleanEmail + '/' + my_User + '/' + noteID).set({
-            noteID: noteID
+              firebase.database().ref('shared_notes/' + cleanEmail + '/' + my_User + '/' + noteID).set({
+                noteID: noteID
+              });
+              alert("Successfully shared with " + share_email);
+            }
           });
-          alert("Successfully shared with " + share_email);
-        }
         }
     };
 
