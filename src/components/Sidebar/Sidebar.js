@@ -26,6 +26,7 @@ import GoogleButton from 'react-google-button'
 import * as firebase from 'firebase'
 import {toggleShared} from '../HomePage/HomePage'
 import {toggleNotes} from '../HomePage/HomePage'
+import {toggleTrash} from '../HomePage/HomePage'
 
 const drawerWidth = 240;
 const useStyles = makeStyles(theme => ({
@@ -199,8 +200,8 @@ export default function MiniDrawer() {
         <List>
           {["Trash"].map((text, index) => (
             <ListItem button key={text}>
-              <ListItemIcon>
-                {index === 0 && <DeleteOutlineOutlinedIcon />}
+              <ListItemIcon onClick = {toggleTrash}>
+                {index === 0 && <DeleteOutlineOutlinedIcon onClick = {toggleTrash}/>}
               </ListItemIcon>
               <ListItemText primary={text}/>
             </ListItem>
