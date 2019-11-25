@@ -1,3 +1,6 @@
+.color-input-form {
+    width: 100%;
+}
 
 .note-title {
   font-size: 14px;
@@ -34,7 +37,7 @@
 }
 
 .note-footer button {
-    margin-left: 10px;
+    margin-left: 0.5px;
 }
 
 .my-masonry-grid {

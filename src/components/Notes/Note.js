@@ -9,9 +9,11 @@ import ShareIcon from '@material-ui/icons/Share'
 import AddTagIcon from '@material-ui/icons/AddCircleOutlined'
 import DelTagIcon from '@material-ui/icons/RemoveCircleOutlined'
 import EditIcon from '@material-ui/icons/Edit'
+import ColorIcon from '@material-ui/icons/ColorLensOutlined';
 import { IconButton } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close'
 import Popup from "reactjs-popup";
+import { BlockPicker, ChromePicker, CirclePicker, CompactPicker, GithubPicker, HuePicker, MaterialPicker, PhotoshopPicker, SketchPicker, SliderPicker, SwatchesPicker, TwitterPicker } from 'react-color';
 
 const customStyles = {
   content : {
@@ -33,6 +35,8 @@ var curr_tag;
 var my_User;
 var myUserEmail;
 var tagSearch;
+var currHex = "#FFFFFF";
+var noteCntr = 0;
 
 const Input = ({ ...other }) => {
     return (
@@ -99,10 +103,24 @@ class Note extends Component {
       title: {value: ''},
       description: {value: ''},
     };
+      
+      noteCntr = 0;
 
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
   };
+    
+  paintNotes() {
+      var notesList = this.state.notes;
+      var detail = [];
+
+      for(let note in notesList){
+          document.getElementsByClassName('note-title')[note].style["background-color"]=notesList[note].color;
+          document.getElementsByClassName('note-content')[note].style["background-color"]=notesList[note].color;
+          document.getElementsByClassName('note-tags')[note].style["background-color"]=notesList[note].color;
+          
+      } 
+  }
 
   openModal() {
     this.setState({modalIsOpen: true});
@@ -135,7 +153,12 @@ class Note extends Component {
       this.closeModal();
     };
 
+  componentDidUpdate() {
+      this.paintNotes();
+  }
+
   componentDidMount() {
+      
     var self = this
     firebase.auth().onAuthStateChanged(function(user) {
       if (user) {
@@ -154,6 +177,7 @@ class Note extends Component {
               subject: notes[note].noteSubject,
               description: notes[note].noteDesc,
               tags: notes[note].noteTags,
+              color: notes[note].color,
             });
           }
           self.setState({
@@ -169,6 +193,8 @@ class Note extends Component {
         console.log('User is not logged-in')
       }
     });
+    
+    
   }
 
   handleEdit = (noteID, title, description) => {
@@ -181,8 +207,8 @@ class Note extends Component {
     };
 
   render () {
-      
-      function separateTags(tags){
+    function updateNoteCntr(){noteCntr = noteCntr+1;}
+    function separateTags(tags){
           if(tags.length <= 2){
               return "";
           }
@@ -190,7 +216,6 @@ class Note extends Component {
             return "Tags: " + tags.replace(/"/g, '').replace(/\[/g, '').replace(/\]/g, '');
           }
       }
-      
     function outputTags(tags){
           let str = "Tags: ";
           if(tags.length <= 2){
@@ -234,7 +259,6 @@ class Note extends Component {
           }
           return retArr;
       }
-
     function textToHtml(html)
     {
         
@@ -266,7 +290,15 @@ class Note extends Component {
             <div className="note-content">{textToHtml(eachNote.description)}</div>
             <div className="note-tags">{outputTags(eachNote.tags)}</div>
             <div className='note-footer'>
-
+              <Popup trigger={ open => (
+                              <IconButton><ColorIcon/>{this.colorPopUp(open)}</IconButton>
+                              )}>
+                  <form onSubmit={this.handleColorChange.bind(this, eachNote.date)} className="input-form">
+                    <CirclePicker onChange={e => this.changeColor(e.hex)} circleSpacing="11px" colors={["#e7baff", "#ffd1a6", "#a6ffbe", "#96b2ff", "#ffb5be"]}>
+                      </CirclePicker>
+                  <Button className="color-button">Reset Color</Button>
+                </form>
+              </Popup>
               <IconButton onClick={this.handleDelete.bind(this, eachNote.date)}>
                 <DeleteIcon/>
               </IconButton>
@@ -292,9 +324,6 @@ class Note extends Component {
               <Popup trigger={<IconButton><DelTagIcon/></IconButton>}>
                 <form onSubmit={this.handleDeleteTag.bind(this, eachNote.date, eachNote.tags)} className="input-form">
                   <div id="tagButtons"></div>
-                    {
-                        //displayExistingTags(eachNote.tags)
-                    }
                       <input
                         type='text' placeholder='Confirm tag name'
                         onChange={this.tagChangeHandler}
@@ -345,6 +374,31 @@ class Note extends Component {
     </div>
       
     );
+  }
+  
+  colorPopUp(open){
+     if(open == false){
+         currHex = "#FFFFFF";
+     }
+  }
+
+  changeColor(someHex){
+      currHex = someHex;
+      if(currHex == "#FFFFFF"){
+          document.getElementsByClassName('color-button')[0].innerHTML = "Reset Color";
+      } else {
+          document.getElementsByClassName('color-button')[0].innerHTML = "Update Color";
+      }
+  }
+
+  handleColorChange(noteID) {
+      //alert('Trying to change color of note#' + noteID + " to " + currHex);
+       var userRef = firebase.database().ref('notes/' + this.state.myUser + '/');
+       var targetref = firebase.database().ref('notes/' + this.state.myUser + '/' + noteID + '/').once('value', function(snapshot){
+            //alert("Trying to change note with current color of: " + snapshot.val().color + ' to ' + currHex);
+            userRef.child(noteID).update({'color': currHex});
+       });
+      
   }
 
 

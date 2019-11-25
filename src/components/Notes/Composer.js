@@ -130,7 +130,8 @@ class Composer extends Component {
          noteSubject: newNote.title,
          noteDesc: newNote.description,
          noteTags: "[]",
-         sharesWith: "[]"
+         sharesWith: "[]",
+         color: "#FFFFFF",
     });
       
     this.setState(initialState);
