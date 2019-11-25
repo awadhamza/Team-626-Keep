@@ -133,6 +133,7 @@ class Composer extends Component {
          sharesWith: "[]",
          color: "#FFFFFF",
          isTrash: "False",
+         isArchived: "False",
     });
       
     this.setState(initialState);
