@@ -7,6 +7,7 @@ import ResponsiveDrawer from '../Sidebar/Sidebar';
 import Composer from '../Notes/Composer';
 import Note from '../Notes/Note';
 import SharedNotes from '../SharedNotes/SharedNotes';
+import Archive from '../Archive/Archive';
 import Trash from '../Trash/Trash';
 
 class HomePage extends Component{
@@ -35,6 +36,7 @@ class HomePage extends Component{
      document.getElementsByClassName("Notes").style.display="block";
      document.getElementsByClassName("SharedNotes").style.display="none";
      document.getElementsByClassName("Trash").style.display="none";
+     document.getElementsByClassName("Archive").style.display="none";
   }
 
     render() {
@@ -54,6 +56,9 @@ class HomePage extends Component{
       <div className="SharedNotes">
         <SharedNotes/>
       </div>
+      <div className="Archive">
+        <Archive/>
+      </div>
       <div className="Trash">
         <Trash/>
       </div>
@@ -66,17 +71,27 @@ export const toggleShared = (n) => {
   document.getElementsByClassName("Notes")[0].style.display="none";
   document.getElementsByClassName("SharedNotes")[0].style.display="block";
   document.getElementsByClassName("Trash")[0].style.display="none";
+  document.getElementsByClassName("Archive")[0].style.display="none";
 }
 
 export const toggleNotes = (n) => {
   document.getElementsByClassName("Notes")[0].style.display="block";
   document.getElementsByClassName("SharedNotes")[0].style.display="none";
   document.getElementsByClassName("Trash")[0].style.display="none";
+  document.getElementsByClassName("Archive")[0].style.display="none";
 }
 
 export const toggleTrash = (n) => {
   document.getElementsByClassName("Notes")[0].style.display="none";
   document.getElementsByClassName("SharedNotes")[0].style.display="none";
   document.getElementsByClassName("Trash")[0].style.display="block";
+  document.getElementsByClassName("Archive")[0].style.display="none";
+}
+
+export const toggleArchive = (n) => {
+  document.getElementsByClassName("Notes")[0].style.display="none";
+  document.getElementsByClassName("SharedNotes")[0].style.display="none";
+  document.getElementsByClassName("Trash")[0].style.display="none";
+  document.getElementsByClassName("Archive")[0].style.display="block";
 }
 export default HomePage;

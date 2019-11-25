@@ -8,6 +8,7 @@ import DeleteIcon from '@material-ui/icons/DeleteOutlined'
 import ShareIcon from '@material-ui/icons/Share'
 import AddTagIcon from '@material-ui/icons/AddCircleOutlined'
 import DelTagIcon from '@material-ui/icons/RemoveCircleOutlined'
+import ArchiveIcon from '@material-ui/icons/Archive'
 import EditIcon from '@material-ui/icons/Edit'
 import ColorIcon from '@material-ui/icons/ColorLensOutlined';
 import { IconButton } from '@material-ui/core';
@@ -170,7 +171,7 @@ class Note extends Component {
 
           let detail = [];
           for (let note in notes) {
-            if(notes[note].isTrash == "False"){
+            if(notes[note].isTrash == "False" && notes[note].isArchived == "False"){
                 detail.push({
                   date: note,
                   subject: notes[note].noteSubject,
@@ -301,6 +302,9 @@ class Note extends Component {
               </Popup>
               <IconButton onClick={this.handleDelete.bind(this, eachNote.date)}>
                 <DeleteIcon/>
+              </IconButton>
+              <IconButton onClick={this.handleArchive.bind(this, eachNote.date)}>
+                <ArchiveIcon/>
               </IconButton>
               <IconButton onClick={this.handleEdit.bind(this, eachNote.date, eachNote.subject, eachNote.description)}><EditIcon/></IconButton>
               <Popup trigger={<IconButton><ShareIcon/></IconButton>}>
@@ -523,6 +527,12 @@ class Note extends Component {
     var user = this.state.myUser;
     let userRef = firebase.database().ref('notes/' + user + '/');
     userRef.child(noteID).update({'isTrash': "True"});
+  }
+
+  handleArchive(noteID) {
+    var user = this.state.myUser;
+    let userRef = firebase.database().ref('notes/' + user + '/');
+    userRef.child(noteID).update({'isArchived': "True"});
   }
 }
 

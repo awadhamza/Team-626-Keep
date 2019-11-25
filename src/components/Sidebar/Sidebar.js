@@ -27,6 +27,7 @@ import * as firebase from 'firebase'
 import {toggleShared} from '../HomePage/HomePage'
 import {toggleNotes} from '../HomePage/HomePage'
 import {toggleTrash} from '../HomePage/HomePage'
+import {toggleArchive} from '../HomePage/HomePage'
 
 const drawerWidth = 240;
 const useStyles = makeStyles(theme => ({
@@ -189,10 +190,10 @@ export default function MiniDrawer() {
         <List>
           {["Archive"].map((text, index) => (
             <ListItem button key={text}>
-              <ListItemIcon>
+              <ListItemIcon onClick = {toggleArchive}>
                 {index === 0 && <ArchiveOutlinedIcon />}
               </ListItemIcon>
-              <ListItemText primary={text}/>
+              <ListItemText primary={text} onClick = {toggleArchive}/>
             </ListItem>
 
           ))}
@@ -201,9 +202,9 @@ export default function MiniDrawer() {
           {["Trash"].map((text, index) => (
             <ListItem button key={text}>
               <ListItemIcon onClick = {toggleTrash}>
-                {index === 0 && <DeleteOutlineOutlinedIcon onClick = {toggleTrash}/>}
+                {index === 0 && <DeleteOutlineOutlinedIcon />}
               </ListItemIcon>
-              <ListItemText primary={text}/>
+              <ListItemText primary={text} onClick = {toggleTrash}/>
             </ListItem>
 
           ))}
