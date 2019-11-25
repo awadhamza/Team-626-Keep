@@ -294,7 +294,7 @@ class Note extends Component {
                               <IconButton><ColorIcon/>{this.colorPopUp(open)}</IconButton>
                               )}>
                   <form onSubmit={this.handleColorChange.bind(this, eachNote.date)} className="input-form">
-                    <CirclePicker onChange={e => this.changeColor(e.hex)} circleSpacing="11px" colors={["#e7baff", "#ffd1a6", "#a6ffbe", "#96b2ff", "#ffb5be"]}>
+                    <CirclePicker onChange={e => this.changeColor(e.hex)} circleSpacing="11px" colors={["#e7baff", "#ffd1a6", "#a6ffbe", "#bdceff", "#ffb5be"]}>
                       </CirclePicker>
                   <Button className="color-button">Reset Color</Button>
                 </form>
@@ -401,7 +401,6 @@ class Note extends Component {
       
   }
 
-
   searchTagHandler = (event) => {
       tagSearch = event.target.value.toLowerCase();
       
@@ -429,6 +428,7 @@ class Note extends Component {
                           subject: childSnapshot.val().noteSubject,
                           description: childSnapshot.val().noteDesc,
                           tags: childSnapshot.val().noteTags,
+                          color: childSnapshot.val().color,
                         });
                       break;
                   }
@@ -446,7 +446,7 @@ class Note extends Component {
   handleDeleteTag(noteID, tag){
       //Get location of this note
       var userRef = firebase.database().ref('notes/' + this.state.myUser + '/' );
-
+      var deleted = false;
       firebase.database().ref('notes/' + this.state.myUser + '/' + noteID + '/').once('value').then(function(note) {
           var note_map = JSON.parse(JSON.stringify(note));
           var tagList = JSON.parse(note_map.noteTags);
@@ -454,12 +454,16 @@ class Note extends Component {
               //alert("is: " + tagList[i] + " == " + curr_tag + "?");
              if ( tagList[i] === curr_tag ) {
                tagList.splice(i, 1); 
-                 
+               deleted = true;
                break;
              }
           }
-          tagList = JSON.stringify(tagList);
-          userRef.child(noteID).update({'noteTags': tagList});
+          if(deleted){
+            tagList = JSON.stringify(tagList);
+            userRef.child(noteID).update({'noteTags': tagList});
+          } else {
+            alert("That tag does not exist");
+          }
      });
   }
 
