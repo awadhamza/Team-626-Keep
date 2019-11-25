@@ -132,6 +132,7 @@ class Composer extends Component {
          noteTags: "[]",
          sharesWith: "[]",
          color: "#FFFFFF",
+         isTrash: "False",
     });
       
     this.setState(initialState);
@@ -193,10 +194,6 @@ class Composer extends Component {
                           </form>
                 </Modal>
               </div>
-
-
-
-
       </div>
     );
   }

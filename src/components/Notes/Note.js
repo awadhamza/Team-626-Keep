@@ -158,7 +158,6 @@ class Note extends Component {
   }
 
   componentDidMount() {
-      
     var self = this
     firebase.auth().onAuthStateChanged(function(user) {
       if (user) {
@@ -170,15 +169,16 @@ class Note extends Component {
           let notes = snapshot.val();
 
           let detail = [];
-
           for (let note in notes) {
-            detail.push({
-              date: note,
-              subject: notes[note].noteSubject,
-              description: notes[note].noteDesc,
-              tags: notes[note].noteTags,
-              color: notes[note].color,
-            });
+            if(notes[note].isTrash == "False"){
+                detail.push({
+                  date: note,
+                  subject: notes[note].noteSubject,
+                  description: notes[note].noteDesc,
+                  tags: notes[note].noteTags,
+                  color: notes[note].color,
+                });
+            }
           }
           self.setState({
             notes: detail,
@@ -398,7 +398,6 @@ class Note extends Component {
             //alert("Trying to change note with current color of: " + snapshot.val().color + ' to ' + currHex);
             userRef.child(noteID).update({'color': currHex});
        });
-      
   }
 
   searchTagHandler = (event) => {
@@ -527,14 +526,8 @@ class Note extends Component {
 
   handleDelete(noteID) {
     var user = this.state.myUser;
-    firebase.database().ref('notes/' + this.state.myUser + '/' + noteID + '/').once('value').then(function(note) {
-      var note_map = JSON.parse(JSON.stringify(note));
-      var shareList = JSON.parse(note_map.sharesWith);
-      for(var note in shareList){
-        firebase.database().ref('shared_notes/' + shareList[note] + '/' + user + '/' + noteID + '/').remove();
-      }
-    });
-    firebase.database().ref('notes/' + user + '/' + noteID).remove();
+    let userRef = firebase.database().ref('notes/' + user + '/');
+    userRef.child(noteID).update({'isTrash': "True"});
   }
 }
 
