@@ -165,7 +165,7 @@ export default function MiniDrawer() {
         <List>
           {["Notes"].map((text, index) => (
             <ListItem button key={text}>
-              <ListItemIcon>
+              <ListItemIcon onClick = {toggleNotes}>
                 {index === 0 && <EmojiObjectsOutlinedIcon />}
               </ListItemIcon>
               <ListItemText primary={text} onClick = {toggleNotes}/>
@@ -176,7 +176,7 @@ export default function MiniDrawer() {
         <List>
           {["Shared With Me"].map((text, index) => (
             <ListItem button key={text}>
-              <ListItemIcon>
+              <ListItemIcon onClick = {toggleShared}>
                 {index === 0 && <SharedIcon />}
               </ListItemIcon>
               <ListItemText primary={text} onClick = {toggleShared}/>
@@ -186,21 +186,32 @@ export default function MiniDrawer() {
         </List>
         <Divider />
         <List>
-          {["Archive", "Trash"].map((text, index) => (
+          {["Archive"].map((text, index) => (
             <ListItem button key={text}>
               <ListItemIcon>
                 {index === 0 && <ArchiveOutlinedIcon />}
-                {index === 1 && <DeleteOutlineOutlinedIcon />}
               </ListItemIcon>
-              <ListItemText primary={text} />
+              <ListItemText primary={text}/>
             </ListItem>
+
+          ))}
+        </List>
+        <List>
+          {["Trash"].map((text, index) => (
+            <ListItem button key={text}>
+              <ListItemIcon>
+                {index === 0 && <DeleteOutlineOutlinedIcon />}
+              </ListItemIcon>
+              <ListItemText primary={text}/>
+            </ListItem>
+
           ))}
         </List>
         <Divider/>
         <List>
           {["Logout"].map((text, index) => (
             <ListItem button key={text}>
-              <ListItemIcon>
+              <ListItemIcon onClick = {signOut}>
                 {index === 0 && <ExitToAppIcon />}
               </ListItemIcon>
               <ListItemText primary={text} onClick = {signOut}/>
