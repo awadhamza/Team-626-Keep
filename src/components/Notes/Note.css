@@ -1,8 +1,23 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins:400&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Merriweather&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Oswald&display=swap');
+
+.filtering-section button {
+    padding: 7px;
+    margin-right: 7px;
+}
+
+.filtering-section input {
+    padding: 7px;
+    
+}
+
 .color-input-form {
     width: 100%;
 }
 
 .note-title {
+  font-family: 'Merriweather', serif;
   font-size: 14px;
   padding-top: 10px;
   font-weight: bold;
@@ -10,21 +25,27 @@
 
 .note-content {
   text-align: left;
-  padding: 5%;
+  padding: 2% 5% 5% 5%;
   word-wrap: break-word;
   overflow-y: auto;
-  height: 120px;
-  font-family: 'Roboto Slab', serif;
+  height: 160px;
+    max-height: 180px;
+  font-family: 'Poppins', serif;
   min-width: 340px;
   max-width: 340px;
 }
 
 .note-tags{
-  padding-top: 10px;
+  padding-top: 8.5px;
+    font-size: 16px;
+    font-family: 'Oswald', serif;
+    padding-bottom: 10px;
+    max-width: 340px;
+    overflow-x: scroll;
 }
 
 .note-list-container {
-    min-height: 105%;
+    min-height: 135%;
     min-width: 340px;
 }
 

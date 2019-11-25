@@ -222,7 +222,7 @@ class Note extends Component {
               return "";
           }
           else {
-            return "Tags: " + tags.replace(/"/g, '').replace(/\[/g, '').replace(/\]/g, '');
+            return "Tags: " + tags.replace(/"/g, '').replace(/\[/g, '').replace(/\]/g, '').replace(/,/g, ', ');
           }
       }
     function cutIndex(strTags){
@@ -270,8 +270,8 @@ class Note extends Component {
       
     return (
     <div>
-      <div>
-      <p>Filter by:</p>
+      <div className="filtering-section">
+      <p>Filter notes by:</p>
       <Button onClick={this.filterRecent.bind(this)}>Most Recent</Button>
       <Button onClick={this.filterAlphabetical.bind(this)}>Alphabetical</Button>
       <input
@@ -473,6 +473,11 @@ class Note extends Component {
   
   handleAddTag(noteID){
       //Get location of this note
+      if(curr_tag == null){
+          alert("Tag can't be empty!");
+          return;
+      }
+      
       var userRef = firebase.database().ref('notes/' + this.state.myUser + '/' );
       
       firebase.database().ref('notes/' + this.state.myUser + '/' + noteID + '/').once('value').then(function(note) {
