@@ -73,6 +73,8 @@ class Note extends Component {
           type='text'
           onChange={this.searchTagHandler.bind(this)}
         />
+        <br/>
+        <Button onClick={this.handleEmptyTrash.bind(this)}>Empty Trash</Button>
       </div>
       {this.state.notes.map((eachNote) => {
         return (
@@ -109,13 +111,29 @@ class Note extends Component {
       var user = this.state.myUser;
       firebase.database().ref('notes/' + this.state.myUser + '/' + noteID + '/').once('value').then(function(note) {
         var note_map = JSON.parse(JSON.stringify(note));
-        var shareList = JSON.parse(note_map.sharesWith);
-        for(var note in shareList){
-          firebase.database().ref('shared_notes/' + shareList[note] + '/' + user + '/' + noteID + '/').remove();
+        if(note_map != null){
+            var shareList = JSON.parse(note_map.sharesWith);
+            for(var note in shareList){
+              firebase.database().ref('shared_notes/' + shareList[note] + '/' + user + '/' + noteID + '/').remove();
+            }
         }
       });
       firebase.database().ref('notes/' + user + '/' + noteID).remove();
-    }
+  }
+
+  handleEmptyTrash(noteID) {
+    var user = this.state.myUser;
+    var userRef = firebase.database().ref('users/');
+    const userDB = firebase.database().ref('notes/' + user + '/');
+    userDB.on('value', (snapshot) => {
+      let notes = snapshot.val();
+      for (let note in notes) {
+        if(notes[note].isTrash == "True"){
+          this.handleDelete(note);
+        }
+      }
+    });
+  }
 
   filterRecent(){
         let temp = [];
