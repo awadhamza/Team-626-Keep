@@ -7,6 +7,7 @@ import ResponsiveDrawer from '../Sidebar/Sidebar';
 import Composer from '../Notes/Composer';
 import Note from '../Notes/Note';
 import SharedNotes from '../SharedNotes/SharedNotes';
+import Trash from '../Trash/Trash';
 
 class HomePage extends Component{
   constructor(props){
@@ -33,6 +34,7 @@ class HomePage extends Component{
   toggleNotes(){
      document.getElementsByClassName("Notes").style.display="block";
      document.getElementsByClassName("SharedNotes").style.display="none";
+     document.getElementsByClassName("Trash").style.display="none";
   }
 
     render() {
@@ -52,6 +54,9 @@ class HomePage extends Component{
       <div className="SharedNotes">
         <SharedNotes/>
       </div>
+      <div className="Trash">
+        <Trash/>
+      </div>
     </div>
     </div>
   );
@@ -60,10 +65,18 @@ class HomePage extends Component{
 export const toggleShared = (n) => {
   document.getElementsByClassName("Notes")[0].style.display="none";
   document.getElementsByClassName("SharedNotes")[0].style.display="block";
+  document.getElementsByClassName("Trash")[0].style.display="none";
 }
 
 export const toggleNotes = (n) => {
   document.getElementsByClassName("Notes")[0].style.display="block";
   document.getElementsByClassName("SharedNotes")[0].style.display="none";
+  document.getElementsByClassName("Trash")[0].style.display="none";
+}
+
+export const toggleTrash = (n) => {
+  document.getElementsByClassName("Notes")[0].style.display="none";
+  document.getElementsByClassName("SharedNotes")[0].style.display="none";
+  document.getElementsByClassName("Trash")[0].style.display="block";
 }
 export default HomePage;
