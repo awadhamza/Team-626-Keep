@@ -59,6 +59,21 @@ class SharedNotes extends Component {
     this.setState({expandModalIsOpen: false});
   }
 
+  paintNotes() {
+          var notesList = this.state.notes;
+          var list = document.getElementsByClassName('note-title');
+      
+          for(let note in notesList){
+              for(let a in list){
+                  if(list[a].innerHTML == notesList[note].subject){
+                     document.getElementsByClassName('note-title')[a].style["background-color"]=notesList[note].color;
+                     document.getElementsByClassName('note-content')[a].style["background-color"]=notesList[note].color;
+                     document.getElementsByClassName('note-tags')[a].style["background-color"]=notesList[note].color;
+                  }
+              }
+          }
+  }
+    
   componentDidMount() {
     var self = this
     firebase.auth().onAuthStateChanged(function(user) {
@@ -108,8 +123,18 @@ class SharedNotes extends Component {
         console.log('User is not logged-in')
       }
     });
+      
+    //alert(document.getElementsByClassName('SharedNotes')[0].style.display == "block");
+      
   }
 
+  componentDidUpdate() {
+      
+      if(document.getElementsByClassName('SharedNotes')[0].style.display == "block"){
+          this.paintNotes();
+      }
+  }
+    
   handleExpandNote = (noteID, title, description, tags) => {
     this.state.note_title = title;
     this.state.note_description = description;
@@ -148,7 +173,6 @@ class SharedNotes extends Component {
       </div>
 
       {this.state.notes.map((eachNote) => {
-        //console.log(eachNote.date)
         return (
           <Masonry
           className="my-masonry-grid"
