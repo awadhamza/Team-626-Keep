@@ -138,6 +138,7 @@ class Archive extends Component {
               <div className="note-title">{eachNote.subject}</div>
               <div className="note-content">{textToHtml(eachNote.description)}</div>
             </div>
+            <div className="note-tags">{outputTags(eachNote.tags)}</div>
             <div className='note-footer'>
               <IconButton onClick={this.handleUnarchive.bind(this, eachNote.date)}>
                 <UnarchiveIcon/>

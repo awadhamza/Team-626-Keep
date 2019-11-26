@@ -141,6 +141,7 @@ class Trash extends Component {
               <div className="note-title">{eachNote.subject}</div>
               <div className="note-content">{textToHtml(eachNote.description)}</div>
             </div>
+            <div className="note-tags">{outputTags(eachNote.tags)}</div>
             <div className='note-footer'>
               <IconButton onClick={this.handleDelete.bind(this, eachNote.date)}>
                 <DeleteIcon/>

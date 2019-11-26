@@ -90,7 +90,9 @@ class SharedNotes extends Component {
                     detail.push({
                       date: note,
                       subject: notes[note].noteSubject,
-                      description: notes[note].noteDesc
+                      description: notes[note].noteDesc,
+                      tags: notes[note].noteTags,
+                      color: notes[note].color,
                     });
                   }
                 }
@@ -156,6 +158,7 @@ class SharedNotes extends Component {
               <div className="note-title">{eachNote.subject}</div>
               <div className="note-content">{textToHtml(eachNote.description)}</div>
             </div>
+            <div className="note-tags">{outputTags(eachNote.tags)}</div>
           </div>
           </Masonry>
 
