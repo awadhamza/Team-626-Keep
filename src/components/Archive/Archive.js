@@ -1,11 +1,26 @@
 import React, { Component } from 'react';
+import Modal from 'react-modal';
 import './Archive.css';
 import * as firebase from 'firebase/app';
 import 'firebase/auth';
 import Masonry from 'react-masonry-css'
 import UnarchiveIcon from '@material-ui/icons/Unarchive'
+import CloseIcon from '@material-ui/icons/Close'
 import { IconButton } from '@material-ui/core';
 import Popup from "reactjs-popup";
+
+const customStyles = {
+  content : {
+    top                   : '50%',
+    left                  : '50%',
+    right                 : 'auto',
+    bottom                : 'auto',
+    width                 : '50%',
+    height                 : '50%',
+    marginRight           : '-50%',
+    transform             : 'translate(-50%, -50%)'
+  }
+};
 
 var tagSearch;
 
@@ -17,13 +32,30 @@ const Button = ({ children, ...other }) => {
     );
   };
 
-class Note extends Component {
+class Archive extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      notes: []
+      notes: [],
+      modalIsOpen: false,
+      expandModalIsOpen: false,
+      note_title: '',
+      note_description: '',
+      tags: '',
+      note_ID: '',
     };
+
+    this.openExpandModal = this.openExpandModal.bind(this);
+    this.closeExpandModal = this.closeExpandModal.bind(this);
   };
+
+  openExpandModal() {
+    this.setState({expandModalIsOpen: true});
+  }
+
+  closeExpandModal() {
+    this.setState({expandModalIsOpen: false});
+  }
 
   componentDidMount() {
       var self = this
@@ -60,7 +92,30 @@ class Note extends Component {
       });
   }
 
+  handleExpandNote = (noteID, title, description, tags) => {
+    this.state.note_title = title;
+    this.state.note_description = description;
+    this.state.note_ID = noteID;
+    this.state.tags = tags;
+    this.openExpandModal();
+  }
+
   render () {
+    function textToHtml(html)
+    {
+        let arr = html.split("</br>");
+        html = arr.reduce((el, a) => el.concat(a, <br />), []);
+        return html;
+    }
+    function outputTags(tags){
+          let str = "Tags: ";
+          if(tags.length <= 2){
+              return "";
+          }
+          else {
+            return "Tags: " + tags.replace(/"/g, '').replace(/\[/g, '').replace(/\]/g, '').replace(/,/g, ', ');
+          }
+    }
     return (
     <div>
       <div>
@@ -79,8 +134,10 @@ class Note extends Component {
           className="my-masonry-grid"
           columnClassName="my-masonry-grid_column">
           <div className="note-list-container">
-            <div className="note-title">{eachNote.subject}</div>
-            <div className="note-content">{eachNote.description}</div>
+            <div style={{cursor:'pointer'}} onClick={this.handleExpandNote.bind(this, eachNote.date, eachNote.subject, eachNote.description, eachNote.tags)}>
+              <div className="note-title">{eachNote.subject}</div>
+              <div className="note-content">{textToHtml(eachNote.description)}</div>
+            </div>
             <div className='note-footer'>
               <IconButton onClick={this.handleUnarchive.bind(this, eachNote.date)}>
                 <UnarchiveIcon/>
@@ -90,6 +147,27 @@ class Note extends Component {
           </Masonry>
         )
       })}
+      <Modal
+        isOpen={this.state.expandModalIsOpen}
+        onAfterOpen={this.afterOpenModal}
+        onRequestClose={this.closeExpandModal}
+        style={customStyles}
+        contentLabel="View Note Modal"
+      >
+        <button onClick={this.closeExpandModal} className="close-button"><CloseIcon/></button>
+          <br></br>
+          <br></br>
+          <h1 style={{'text-align':'center', 'margin-top':'-10px', 'width':'100%'}}>{this.state.note_title}</h1>
+          <br></br>
+          <br></br>
+          <div style={{'margin-top': '-45px', 'height': '50%', 'overflow-y':'auto'}}>{textToHtml(this.state.note_description)}</div>
+          <div className="note-modal-tags">{outputTags(this.state.tags)}</div>
+          <div className='modal-note-footer'>
+              <IconButton onClick={this.handleUnarchive.bind(this, this.state.note_ID)}>
+                <UnarchiveIcon/>
+              </IconButton>
+          </div>
+      </Modal>
     </div>
 
     );
@@ -99,6 +177,7 @@ class Note extends Component {
     var user = this.state.myUser;
     let userRef = firebase.database().ref('notes/' + user + '/');
     userRef.child(noteID).update({'isArchived': "False"});
+    this.closeExpandModal();
   }
 
   filterRecent(){
@@ -173,4 +252,4 @@ class Note extends Component {
       }
 }
 
-export default Note;
+export default Archive;
