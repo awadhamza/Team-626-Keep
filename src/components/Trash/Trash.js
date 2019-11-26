@@ -58,6 +58,21 @@ class Trash extends Component {
     this.setState({expandModalIsOpen: false});
   }
 
+  paintNotes() {
+      var notesList = this.state.notes;
+      var list = document.getElementsByClassName('note-title');
+
+      for(let note in notesList){
+          for(let a in list){
+              if(list[a].innerHTML == notesList[note].subject){
+                 document.getElementsByClassName('note-title')[a].style["background-color"]=notesList[note].color;
+                 document.getElementsByClassName('note-content')[a].style["background-color"]=notesList[note].color;
+                 document.getElementsByClassName('note-tags')[a].style["background-color"]=notesList[note].color;
+              }
+          }
+      }
+  }
+    
   componentDidMount() {
       var self = this
       firebase.auth().onAuthStateChanged(function(user) {
@@ -91,6 +106,12 @@ class Trash extends Component {
           console.log('User is not logged-in')
         }
       });
+  }
+    
+  componentDidUpdate() {
+      if(document.getElementsByClassName('Trash')[0].style.display == "block"){
+          this.paintNotes();
+      }
   }
 
   handleExpandNote = (noteID, title, description, tags) => {
