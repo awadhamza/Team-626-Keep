@@ -69,9 +69,8 @@ class Composer extends Component {
     this.state = {
       myUser: "",
       modalIsOpen: false,
-      image: null,
-      url: "",
-      progress: 0
+      picture: null,
+      uniqueLink: ""
     };
     let state = initialState;
     if (props.note) {
@@ -83,6 +82,7 @@ class Composer extends Component {
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
 
   openModal() {
@@ -91,6 +91,8 @@ class Composer extends Component {
 
   closeModal() {
     this.setState({modalIsOpen: false});
+    this.setState({picture: null});
+    this.setState({uniqueLink: ""});
   }
 
   componentDidMount() {
@@ -102,7 +104,7 @@ class Composer extends Component {
         })
       }
       else {
-        console.log('nope')
+        console.log('User is not logged-in')
       }
     })
   }
@@ -122,21 +124,24 @@ class Composer extends Component {
         const picture = event.target.files[0];
         this.setState(() => ({ picture }));
       }
+      
     }
 
   };
 
+
   handleSubmit = e => {
-
     e.preventDefault();
-
+    console.log(this.state)
     const { onSubmit, note } = this.props;
     const title = this.state.title.value;
     const description = this.state.description.value.replace(/\n/g, '</br>');
+    //var image = this.state.image.value;
 
     const newNote = {
       title,
       description,
+      //image
     }
 
     if (note) {
@@ -158,12 +163,12 @@ class Composer extends Component {
          isArchived: "False",
     });
 
-
     // Append to storage
     const storage = firebase.storage();
-    const {picture} = this.state;
-    if (picture != null) {
+    var { picture } = this.state;
 
+    if (picture != null) {
+      console.log("picture is not null")
       var self = this;
       const uploadTask = storage.ref(`note_img/${picture.name}`).put(picture);
       uploadTask.on('state_changed',
@@ -173,18 +178,20 @@ class Composer extends Component {
         console.log(error);
       },
       () => {
-        storage.ref('note_img').child(picture.name).getDownloadURL().then(uniqueLink => {
-          self.setState({uniqueLink});
-          dbRef.update({
-            imageLink: this.state.uniqueLink
-          });
+        storage
+          .ref('note_img')
+          .child(picture.name)
+          .getDownloadURL()
+          .then(uniqueLink => {
+            self.setState({uniqueLink});
+            dbRef.update({
+              imageLink: self.state.uniqueLink
+            });
 
         })
       });
     }
     
-
-
     this.setState(initialState);
     this.closeModal();
   };
@@ -245,8 +252,8 @@ class Composer extends Component {
                                 <Input 
                                 type="file"
                                 name="image"
-                                value={this.getValue('image')}
-                                 onChange={this.handleChange} />
+                                //value={this.getValue('image')}
+                                onChange={this.handleChange} />
                               </div>
                             </div>
                             </div>

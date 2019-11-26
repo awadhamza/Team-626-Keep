@@ -237,7 +237,7 @@ class Note extends Component {
       this.state.title.value = title;
       this.state.note_description = description.split('</br>').join('\n');
       this.state.description.value = description.split('</br>').join('\n');
-      //this.state.note_image = image;
+      this.state.note_image = image;
       this.state.note_ID = noteID;
       this.openModal();
     };
@@ -324,8 +324,9 @@ class Note extends Component {
           <div className="note-list-container">
             
             <div className="note-title">{eachNote.subject}</div>
-            <div className="note-content">{textToHtml(eachNote.description)}
-            <img src={eachNote.image} className="note-image" />
+            <div className="note-content">
+              {textToHtml(eachNote.description)}
+              <img src={eachNote.image} className="note-image" />
             </div>
             <div className="note-tags">{outputTags(eachNote.tags)}</div>
             <div className='note-footer'>

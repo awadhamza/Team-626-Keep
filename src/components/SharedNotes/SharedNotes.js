@@ -57,7 +57,8 @@ class Note extends Component {
                     detail.push({
                       date: note,
                       subject: notes[note].noteSubject,
-                      description: notes[note].noteDesc
+                      description: notes[note].noteDesc,
+                      image: notes[note].imageLink,
                     });
                   }
                 }
@@ -91,7 +92,9 @@ class Note extends Component {
           columnClassName="my-masonry-grid_column">
           <div className="note-list-container">
             <div className="note-title">{eachNote.subject}</div>
-            <div className="note-content">{eachNote.description}</div>
+            <div className="note-content">{eachNote.description}
+            <img src={eachNote.image} className="note-image" />
+            </div>
           </div>
           </Masonry>
 
