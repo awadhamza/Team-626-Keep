@@ -1,12 +1,27 @@
 import React, { Component } from 'react';
+import Modal from 'react-modal';
 import './Trash.css';
 import * as firebase from 'firebase/app';
 import 'firebase/auth';
 import Masonry from 'react-masonry-css'
 import DeleteIcon from '@material-ui/icons/DeleteOutlined'
 import RestoreIcon from '@material-ui/icons/Restore'
+import CloseIcon from '@material-ui/icons/Close'
 import { IconButton } from '@material-ui/core';
 import Popup from "reactjs-popup";
+
+const customStyles = {
+  content : {
+    top                   : '50%',
+    left                  : '50%',
+    right                 : 'auto',
+    bottom                : 'auto',
+    width                 : '50%',
+    height                 : '50%',
+    marginRight           : '-50%',
+    transform             : 'translate(-50%, -50%)'
+  }
+};
 
 var tagSearch;
 
@@ -18,14 +33,46 @@ const Button = ({ children, ...other }) => {
     );
   };
 
-class Note extends Component {
+class Trash extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      notes: []
+      notes: [],
+      modalIsOpen: false,
+      expandModalIsOpen: false,
+      note_title: '',
+      note_description: '',
+      tags: '',
+      note_ID: '',
     };
+
+    this.openExpandModal = this.openExpandModal.bind(this);
+    this.closeExpandModal = this.closeExpandModal.bind(this);
   };
 
+  openExpandModal() {
+    this.setState({expandModalIsOpen: true});
+  }
+
+  closeExpandModal() {
+    this.setState({expandModalIsOpen: false});
+  }
+
+  paintNotes() {
+      var notesList = this.state.notes;
+      var list = document.getElementsByClassName('note-title');
+
+      for(let note in notesList){
+          for(let a in list){
+              if(list[a].innerHTML == notesList[note].subject){
+                 document.getElementsByClassName('note-title')[a].style["background-color"]=notesList[note].color;
+                 document.getElementsByClassName('note-content')[a].style["background-color"]=notesList[note].color;
+                 document.getElementsByClassName('note-tags')[a].style["background-color"]=notesList[note].color;
+              }
+          }
+      }
+  }
+    
   componentDidMount() {
       var self = this
       firebase.auth().onAuthStateChanged(function(user) {
@@ -61,8 +108,37 @@ class Note extends Component {
         }
       });
   }
+    
+  componentDidUpdate() {
+      if(document.getElementsByClassName('Trash')[0].style.display == "block"){
+          this.paintNotes();
+      }
+  }
+
+  handleExpandNote = (noteID, title, description, tags) => {
+    this.state.note_title = title;
+    this.state.note_description = description;
+    this.state.note_ID = noteID;
+    this.state.tags = tags;
+    this.openExpandModal();
+  }
 
   render () {
+    function textToHtml(html)
+    {
+        let arr = html.split("</br>");
+        html = arr.reduce((el, a) => el.concat(a, <br />), []);
+        return html;
+    }
+    function outputTags(tags){
+          let str = "Tags: ";
+          if(tags.length <= 2){
+              return "";
+          }
+          else {
+            return "Tags: " + tags.replace(/"/g, '').replace(/\[/g, '').replace(/\]/g, '').replace(/,/g, ', ');
+          }
+    }
     return (
     <div>
       <div>
@@ -83,10 +159,14 @@ class Note extends Component {
           className="my-masonry-grid"
           columnClassName="my-masonry-grid_column">
           <div className="note-list-container">
-            <div className="note-title">{eachNote.subject}</div>
-            <div className="note-content">{eachNote.description}
-            <img src={eachNote.image} className="note-image" />
+            <div style={{cursor:'pointer'}} onClick={this.handleExpandNote.bind(this, eachNote.date, eachNote.subject, eachNote.description, eachNote.tags)}>
+              <div className="note-title">{eachNote.subject}</div>
+              <div className="note-content">
+                     {textToHtml(eachNote.description)}
+                     <img src={eachNote.image} className="note-image" />
+              </div>
             </div>
+            <div className="note-tags">{outputTags(eachNote.tags)}</div>
             <div className='note-footer'>
               <IconButton onClick={this.handleDelete.bind(this, eachNote.date)}>
                 <DeleteIcon/>
@@ -99,8 +179,31 @@ class Note extends Component {
           </Masonry>
         )
       })}
+      <Modal
+        isOpen={this.state.expandModalIsOpen}
+        onAfterOpen={this.afterOpenModal}
+        onRequestClose={this.closeExpandModal}
+        style={customStyles}
+        contentLabel="View Note Modal"
+      >
+        <button onClick={this.closeExpandModal} className="close-button"><CloseIcon/></button>
+          <br></br>
+          <br></br>
+          <h1 style={{'text-align':'center', 'margin-top':'-10px', 'width':'100%'}}>{this.state.note_title}</h1>
+          <br></br>
+          <br></br>
+          <div style={{'margin-top': '-45px', 'height': '50%', 'overflow-y':'auto'}}>{textToHtml(this.state.note_description)}</div>
+          <div className="note-modal-tags">{outputTags(this.state.tags)}</div>
+          <div className='modal-note-footer'>
+              <IconButton onClick={this.handleDelete.bind(this, this.state.note_ID)}>
+                <DeleteIcon/>
+              </IconButton>
+              <IconButton onClick={this.handleRestore.bind(this, this.state.note_ID)}>
+                <RestoreIcon/>
+              </IconButton>
+          </div>
+      </Modal>
     </div>
-
     );
   }
 
@@ -108,6 +211,7 @@ class Note extends Component {
     var user = this.state.myUser;
     let userRef = firebase.database().ref('notes/' + user + '/');
     userRef.child(noteID).update({'isTrash': "False"});
+    this.closeExpandModal();
   }
 
   handleDelete(noteID) {
@@ -122,6 +226,7 @@ class Note extends Component {
         }
       });
       firebase.database().ref('notes/' + user + '/' + noteID).remove();
+      this.closeExpandModal();
   }
 
   handleEmptyTrash(noteID) {
@@ -136,6 +241,7 @@ class Note extends Component {
         }
       }
     });
+    this.closeExpandModal();
   }
 
   filterRecent(){
@@ -213,4 +319,4 @@ class Note extends Component {
       }
 }
 
-export default Note;
+export default Trash;

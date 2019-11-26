@@ -10,6 +10,9 @@ import SharedNotes from '../SharedNotes/SharedNotes';
 import Archive from '../Archive/Archive';
 import Trash from '../Trash/Trash';
 import ImageUpload from '../Image/Image';
+import {updateShared} from '../SharedNotes/SharedNotes'
+
+var self;
 
 class HomePage extends Component{
   constructor(props){
@@ -20,7 +23,7 @@ class HomePage extends Component{
   }
 
   componentDidMount() {
-    var self = this
+    self = this
     firebase.auth().onAuthStateChanged(function(user){
       if (user) {
         self.setState({
@@ -38,6 +41,7 @@ class HomePage extends Component{
      document.getElementsByClassName("SharedNotes").style.display="none";
      document.getElementsByClassName("Trash").style.display="none";
      document.getElementsByClassName("Archive").style.display="none";
+     self.forceUpdate();
   }
 
     render() {
@@ -73,6 +77,7 @@ export const toggleShared = (n) => {
   document.getElementsByClassName("SharedNotes")[0].style.display="block";
   document.getElementsByClassName("Trash")[0].style.display="none";
   document.getElementsByClassName("Archive")[0].style.display="none";
+  self.forceUpdate();
 }
 
 export const toggleNotes = (n) => {
@@ -80,6 +85,7 @@ export const toggleNotes = (n) => {
   document.getElementsByClassName("SharedNotes")[0].style.display="none";
   document.getElementsByClassName("Trash")[0].style.display="none";
   document.getElementsByClassName("Archive")[0].style.display="none";
+  self.forceUpdate();
 }
 
 export const toggleTrash = (n) => {
@@ -87,6 +93,7 @@ export const toggleTrash = (n) => {
   document.getElementsByClassName("SharedNotes")[0].style.display="none";
   document.getElementsByClassName("Trash")[0].style.display="block";
   document.getElementsByClassName("Archive")[0].style.display="none";
+  self.forceUpdate();
 }
 
 export const toggleArchive = (n) => {
@@ -94,5 +101,6 @@ export const toggleArchive = (n) => {
   document.getElementsByClassName("SharedNotes")[0].style.display="none";
   document.getElementsByClassName("Trash")[0].style.display="none";
   document.getElementsByClassName("Archive")[0].style.display="block";
+  self.forceUpdate();
 }
 export default HomePage;

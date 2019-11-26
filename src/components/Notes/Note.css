@@ -29,18 +29,33 @@
   word-wrap: break-word;
   overflow-y: auto;
   height: 160px;
-    max-height: 180px;
+  max-height: 180px;
   font-family: 'Poppins', serif;
-  min-width: 340px;
-  max-width: 340px;
+  width: 370px;
 }
 
 .note-tags{
+    padding-left: 5px;
+    margin-right: 10px;
+    padding-right: 5px;
+    padding-top: 8.5px;
+    font-size: 16px;
+    font-family: 'Oswald', serif;
+    padding-bottom: 10px;
+    height: 51px;
+    overflow: auto;
+    white-space: nowrap;
+    width: 370px;
+}
+
+.note-modal-tags{
+  margin-top: -30px;
+  text-align: center;
   padding-top: 8.5px;
     font-size: 16px;
     font-family: 'Oswald', serif;
     padding-bottom: 10px;
-    max-width: 340px;
+    max-width: 100%;
     overflow-x: scroll;
 }
 
@@ -50,20 +65,28 @@
 }
 
 .note-list-container {
-    min-height: 135%;
-    min-width: 340px;
+    min-height: 155%;
+    width: 360px;
 }
 
 .note-footer {
-  padding-left: 10px;
-  padding-right: 10px;
   display: table-cell;
   vertical-align: bottom;
-  
+    width: 383px;
+}
+
+.modal-note-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  background-color: white;
+  text-align: center;
 }
 
 .note-footer button {
-    margin-left: 0.5px;
+    margin-left: 10px;
 }
 
 .my-masonry-grid {
@@ -72,6 +95,7 @@
   float: left;
   display: flex;
   margin-left: 30px; /* gutter size offset */
+    margin-bottom: 150px;
   width: auto;
 }
 .my-masonry-grid_column {
