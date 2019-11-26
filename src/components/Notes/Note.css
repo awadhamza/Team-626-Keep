@@ -44,6 +44,11 @@
     overflow-x: scroll;
 }
 
+.note-image {
+  height: 250px;
+  width: auto;
+}
+
 .note-list-container {
     min-height: 135%;
     min-width: 340px;

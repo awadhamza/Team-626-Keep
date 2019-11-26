@@ -4,8 +4,8 @@ import './Composer.css';
 import * as firebase from 'firebase/app';
 import 'firebase/auth';
 import AddIcon from '@material-ui/icons/AddCircle'
+import ImageUpload from '../Image/Image';
 import CloseIcon from '@material-ui/icons/Close'
-
 const customStyles = {
   content : {
     top                   : '50%',
@@ -27,6 +27,9 @@ const initialState = {
   },
   description: {
     value: ''
+  },
+  image: {
+    value: ''
   }
 };
 
@@ -37,6 +40,9 @@ const noteToState = note => {
     },
     description: {
       value: note.description,
+    },
+    image: {
+      value: note.image
     }
   };
 }
@@ -62,8 +68,11 @@ class Composer extends Component {
     super(props);
     this.state = {
       myUser: "",
-      modalIsOpen: false
-    }
+      modalIsOpen: false,
+      image: null,
+      url: "",
+      progress: 0
+    };
     let state = initialState;
     if (props.note) {
       state = noteToState(props.note);
@@ -73,6 +82,7 @@ class Composer extends Component {
 
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   openModal() {
@@ -103,39 +113,78 @@ class Composer extends Component {
     this.setState({
       [fieldName]: {
         value: event.target.value
-      }
+      },  
+      
     });
+
+    if (event.target.files) {
+      if(event.target.files[0]){
+        const picture = event.target.files[0];
+        this.setState(() => ({ picture }));
+      }
+    }
+
   };
 
   handleSubmit = e => {
+
     e.preventDefault();
+
     const { onSubmit, note } = this.props;
     const title = this.state.title.value;
     const description = this.state.description.value.replace(/\n/g, '</br>');
 
     const newNote = {
       title,
-      description
+      description,
     }
 
     if (note) {
       newNote.id = note.id;
     }
       
+
+    // Append to real-time database
     var database = firebase.database();
-
-    var dbRef = database.ref('notes/' + this.state.myUser + '/');
-
-    database.ref('notes/' + this.state.myUser +'/' + Date.now() +'/').set({
+    var dbRef = database.ref('notes/' + this.state.myUser + '/' + Date.now());
+    dbRef.set({
          noteSubject: newNote.title,
          noteDesc: newNote.description,
+         imageLink: '',
          noteTags: "[]",
          sharesWith: "[]",
          color: "#FFFFFF",
          isTrash: "False",
          isArchived: "False",
     });
-      
+
+
+    // Append to storage
+    const storage = firebase.storage();
+    const {picture} = this.state;
+    if (picture != null) {
+
+      var self = this;
+      const uploadTask = storage.ref(`note_img/${picture.name}`).put(picture);
+      uploadTask.on('state_changed',
+      (snapshot) => {
+      },
+      (error) => {
+        console.log(error);
+      },
+      () => {
+        storage.ref('note_img').child(picture.name).getDownloadURL().then(uniqueLink => {
+          self.setState({uniqueLink});
+          dbRef.update({
+            imageLink: this.state.uniqueLink
+          });
+
+        })
+      });
+    }
+    
+
+
     this.setState(initialState);
     this.closeModal();
   };
@@ -173,7 +222,6 @@ class Composer extends Component {
                               type="text"
                               name="title"
                               placeholder="Title"
-                              autoComplete={false}
                               autoFocus
                               value={this.getValue('title')}
                               onChange={this.handleChange}
@@ -190,11 +238,24 @@ class Composer extends Component {
                               onChange={this.handleChange}
                             />
                             <br></br>
+                            <div className="center">
+                            <div className="file-field input-field">
+                              <div className="btn">
+                                <span>Upload image: </span>
+                                <Input 
+                                type="file"
+                                name="image"
+                                value={this.getValue('image')}
+                                 onChange={this.handleChange} />
+                              </div>
+                            </div>
+                            </div>
                             <br></br>
+                            
                             <Button>Done</Button>
-                          </form>
+                    </form>
                 </Modal>
-              </div>
+        </div>
       </div>
     );
   }

@@ -9,6 +9,7 @@ import Note from '../Notes/Note';
 import SharedNotes from '../SharedNotes/SharedNotes';
 import Archive from '../Archive/Archive';
 import Trash from '../Trash/Trash';
+import ImageUpload from '../Image/Image';
 
 class HomePage extends Component{
   constructor(props){
@@ -62,7 +63,7 @@ class HomePage extends Component{
       <div className="Trash">
         <Trash/>
       </div>
-    </div>
+      </div>
     </div>
   );
   }
