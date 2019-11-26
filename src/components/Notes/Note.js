@@ -219,15 +219,17 @@ class Note extends Component {
       this.openModal();
     };
 
-    handleEdit = (noteID, title, description) => {
+    handleModalEdit = (noteID, title, description) => {
       this.closeExpandModal();
+      this.state.note_description = this.state.note_description.split('</br>').join('\n');
+      this.state.description.value = this.state.description.value.split('</br>').join('\n');
       this.openModal();
     };
 
     handleExpandNote = (noteID, title, description, tags) => {
       this.state.note_title = title;
       this.state.title.value = title;
-      this.state.note_description = description.split('</br>').join('\n');
+      this.state.note_description = description;
       this.state.description.value = description.split('</br>').join('\n');
       this.state.note_ID = noteID;
       this.state.tags = tags;
@@ -418,7 +420,7 @@ class Note extends Component {
           <h1 style={{'text-align':'center', 'margin-top':'-10px', 'width':'100%'}}>{this.state.note_title}</h1>
           <br></br>
           <br></br>
-          <h5 style={{'margin-top': '-45px', 'height': '50%', 'overflow-y':'auto'}}>{this.state.note_description}</h5>
+          <div style={{'margin-top': '-45px', 'height': '50%', 'overflow-y':'auto'}}>{textToHtml(this.state.note_description)}</div>
           <div className="note-modal-tags">{outputTags(this.state.tags)}</div>
           <div className='modal-note-footer'>
               <Popup trigger={ open => (
@@ -436,7 +438,7 @@ class Note extends Component {
               <IconButton onClick={this.handleArchive.bind(this, this.state.note_ID)}>
                 <ArchiveIcon/>
               </IconButton>
-              <IconButton onClick={this.handleEdit.bind(this, this.state.note_ID, this.state.title, this.state.description)}><EditIcon/></IconButton>
+              <IconButton onClick={this.handleModalEdit.bind(this, this.state.note_ID, this.state.title, this.state.description)}><EditIcon/></IconButton>
               <Popup trigger={<IconButton><ShareIcon/></IconButton>}>
                 <form onSubmit={handleShare(this.state.note_ID)} className="input-form">
                   <input
