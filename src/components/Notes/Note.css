@@ -60,16 +60,14 @@
 }
 
 .note-list-container {
-    min-height: 135%;
+    min-height: 155%;
     width: 360px;
 }
 
 .note-footer {
-  padding-left: 10px;
-  padding-right: 10px;
   display: table-cell;
   vertical-align: bottom;
-
+    width: 383px;
 }
 
 .modal-note-footer {
@@ -83,7 +81,7 @@
 }
 
 .note-footer button {
-    margin-left: 0.5px;
+    margin-left: 10px;
 }
 
 .my-masonry-grid {
