@@ -98,8 +98,10 @@ class Note extends Component {
       notes: [],
       myUser: '',
       modalIsOpen: false,
+      expandModalIsOpen: false,
       note_title: '',
       note_description: '',
+      tags: '',
       note_ID: '',
       title: {value: ''},
       description: {value: ''},
@@ -109,6 +111,8 @@ class Note extends Component {
 
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
+    this.openExpandModal = this.openExpandModal.bind(this);
+    this.closeExpandModal = this.closeExpandModal.bind(this);
   };
     
   paintNotes() {
@@ -129,6 +133,14 @@ class Note extends Component {
 
   closeModal() {
     this.setState({modalIsOpen: false});
+  }
+
+  openExpandModal() {
+    this.setState({expandModalIsOpen: true});
+  }
+
+  closeExpandModal() {
+    this.setState({expandModalIsOpen: false});
   }
 
   handleChange = event => {
@@ -206,6 +218,21 @@ class Note extends Component {
       this.state.note_ID = noteID;
       this.openModal();
     };
+
+    handleEdit = (noteID, title, description) => {
+      this.closeExpandModal();
+      this.openModal();
+    };
+
+    handleExpandNote = (noteID, title, description, tags) => {
+      this.state.note_title = title;
+      this.state.title.value = title;
+      this.state.note_description = description.split('</br>').join('\n');
+      this.state.description.value = description.split('</br>').join('\n');
+      this.state.note_ID = noteID;
+      this.state.tags = tags;
+      this.openExpandModal();
+    }
 
   render () {
     function updateNoteCntr(){noteCntr = noteCntr+1;}
@@ -287,8 +314,10 @@ class Note extends Component {
           className="my-masonry-grid"
           columnClassName="my-masonry-grid_column">
           <div className="note-list-container">
-            <div className="note-title">{eachNote.subject}</div>
-            <div className="note-content">{textToHtml(eachNote.description)}</div>
+            <div style={{cursor:'pointer'}} onClick={this.handleExpandNote.bind(this, eachNote.date, eachNote.subject, eachNote.description, eachNote.tags)}>
+              <div className="note-title">{eachNote.subject}</div>
+              <div className="note-content">{textToHtml(eachNote.description)}</div>
+            </div>
             <div className="note-tags">{outputTags(eachNote.tags)}</div>
             <div className='note-footer'>
               <Popup trigger={ open => (
@@ -375,8 +404,70 @@ class Note extends Component {
           <Button>Done</Button>
         </form>
       </Modal>
+
+      <Modal
+        isOpen={this.state.expandModalIsOpen}
+        onAfterOpen={this.afterOpenModal}
+        onRequestClose={this.closeExpandModal}
+        style={customStyles}
+        contentLabel="View Note Modal"
+      >
+        <button onClick={this.closeExpandModal} className="close-button"><CloseIcon/></button>
+          <br></br>
+          <br></br>
+          <h1 style={{'text-align':'center', 'margin-top':'-10px', 'width':'100%'}}>{this.state.note_title}</h1>
+          <br></br>
+          <br></br>
+          <h5 style={{'margin-top': '-45px', 'height': '50%', 'overflow-y':'auto'}}>{this.state.note_description}</h5>
+          <div className="note-modal-tags">{outputTags(this.state.tags)}</div>
+          <div className='modal-note-footer'>
+              <Popup trigger={ open => (
+                              <IconButton><ColorIcon/>{this.colorPopUp(open)}</IconButton>
+                              )}>
+                  <form onSubmit={this.handleColorChange.bind(this, this.state.note_ID)} className="input-form">
+                    <CirclePicker onChange={e => this.changeColor(e.hex)} circleSpacing="11px" colors={["#e7baff", "#ffd1a6", "#a6ffbe", "#bdceff", "#ffb5be"]}>
+                      </CirclePicker>
+                  <Button className="color-button">Reset Color</Button>
+                </form>
+              </Popup>
+              <IconButton onClick={this.handleDelete.bind(this, this.state.note_ID)}>
+                <DeleteIcon/>
+              </IconButton>
+              <IconButton onClick={this.handleArchive.bind(this, this.state.note_ID)}>
+                <ArchiveIcon/>
+              </IconButton>
+              <IconButton onClick={this.handleEdit.bind(this, this.state.note_ID, this.state.title, this.state.description)}><EditIcon/></IconButton>
+              <Popup trigger={<IconButton><ShareIcon/></IconButton>}>
+                <form onSubmit={handleShare(this.state.note_ID)} className="input-form">
+                  <input
+                    type='text'
+                    onChange={this.myChangeHandler}
+                  />
+                  <Button>Share</Button>
+                </form>
+              </Popup>
+              <Popup trigger={<IconButton><AddTagIcon/></IconButton>}>
+                <form onSubmit={this.handleAddTag.bind(this, this.state.note_ID)} className="input-form">
+                  <input
+                    type='text'
+                    onChange={this.tagChangeHandler}
+                  />
+                  <Button>Add Tag</Button>
+                </form>
+              </Popup>
+              <Popup trigger={<IconButton><DelTagIcon/></IconButton>}>
+                <form onSubmit={this.handleDeleteTag.bind(this, this.state.note_ID, this.state.tags)} className="input-form">
+                  <div id="tagButtons"></div>
+                      <input
+                        type='text' placeholder='Confirm tag name'
+                        onChange={this.tagChangeHandler}
+                      />
+                      <Button>Remove</Button>
+                </form>
+              </Popup>
+            </div>
+      </Modal>
     </div>
-      
     );
   }
   
@@ -532,12 +623,14 @@ class Note extends Component {
     var user = this.state.myUser;
     let userRef = firebase.database().ref('notes/' + user + '/');
     userRef.child(noteID).update({'isTrash': "True"});
+    {this.closeExpandModal()}
   }
 
   handleArchive(noteID) {
     var user = this.state.myUser;
     let userRef = firebase.database().ref('notes/' + user + '/');
     userRef.child(noteID).update({'isArchived': "True"});
+    {this.closeExpandModal()}
   }
 }
 

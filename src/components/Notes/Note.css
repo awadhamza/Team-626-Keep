@@ -44,6 +44,17 @@
     overflow-x: scroll;
 }
 
+.note-modal-tags{
+  margin-top: -30px;
+  text-align: center;
+  padding-top: 8.5px;
+    font-size: 16px;
+    font-family: 'Oswald', serif;
+    padding-bottom: 10px;
+    max-width: 100%;
+    overflow-x: scroll;
+}
+
 .note-list-container {
     min-height: 135%;
     min-width: 340px;
@@ -54,7 +65,17 @@
   padding-right: 10px;
   display: table-cell;
   vertical-align: bottom;
-  
+
+}
+
+.modal-note-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  background-color: white;
+  text-align: center;
 }
 
 .note-footer button {
