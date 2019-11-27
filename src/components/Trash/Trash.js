@@ -91,6 +91,7 @@ class Trash extends Component {
                     subject: notes[note].noteSubject,
                     description: notes[note].noteDesc,
                     tags: notes[note].noteTags,
+                    image: notes[note].imageLink,
                     color: notes[note].color,
                   });
               }
@@ -160,7 +161,10 @@ class Trash extends Component {
           <div className="note-list-container">
             <div style={{cursor:'pointer'}} onClick={this.handleExpandNote.bind(this, eachNote.date, eachNote.subject, eachNote.description, eachNote.tags)}>
               <div className="note-title">{eachNote.subject}</div>
-              <div className="note-content">{textToHtml(eachNote.description)}</div>
+              <div className="note-content">
+                     {textToHtml(eachNote.description)}
+                     <img src={eachNote.image} className="note-image" />
+              </div>
             </div>
             <div className="note-tags">{outputTags(eachNote.tags)}</div>
             <div className='note-footer'>

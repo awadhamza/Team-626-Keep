@@ -106,6 +106,7 @@ class SharedNotes extends Component {
                       date: note,
                       subject: notes[note].noteSubject,
                       description: notes[note].noteDesc,
+                      image: notes[note].imageLink,
                       tags: notes[note].noteTags,
                       color: notes[note].color,
                     });
@@ -180,7 +181,8 @@ class SharedNotes extends Component {
           <div className="note-list-container">
             <div style={{cursor:'pointer'}} onClick={this.handleExpandNote.bind(this, eachNote.date, eachNote.subject, eachNote.description, eachNote.tags)}>
               <div className="note-title">{eachNote.subject}</div>
-              <div className="note-content">{textToHtml(eachNote.description)}</div>
+              <div className="note-content">{textToHtml(eachNote.description)}
+                <img src={eachNote.image} className="note-image" /></div>
             </div>
             <div className="note-tags">{outputTags(eachNote.tags)}</div>
           </div>

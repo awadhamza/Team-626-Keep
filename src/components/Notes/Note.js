@@ -14,6 +14,8 @@ import ColorIcon from '@material-ui/icons/ColorLensOutlined';
 import { IconButton } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close'
 import Popup from "reactjs-popup";
+import ImageUpload from '../Image/Image';
+import InsertPhoto from '@material-ui/icons/InsertPhotoOutlined';
 import { BlockPicker, ChromePicker, CirclePicker, CompactPicker, GithubPicker, HuePicker, MaterialPicker, PhotoshopPicker, SketchPicker, SliderPicker, SwatchesPicker, TwitterPicker } from 'react-color';
 
 const customStyles = {
@@ -105,6 +107,7 @@ class Note extends Component {
       note_ID: '',
       title: {value: ''},
       description: {value: ''},
+      image: null,
     };
       
       noteCntr = 0;
@@ -151,6 +154,13 @@ class Note extends Component {
           value: event.target.value
         }
       });
+      
+      if (event.target.files) {
+        if(event.target.files[0]){
+          const picture = event.target.files[0];
+          this.setState(() => ({ picture }));
+        }
+      }
     };
 
     handleSubmit = e => {
@@ -158,10 +168,33 @@ class Note extends Component {
       const { onSubmit, note } = this.props;
       const title = this.state.title.value;
       const description = this.state.description.value.replace(/\n/g, '</br>');
+      //const image = this.state.image.value;
 
       var userRef = firebase.database().ref('notes/' + this.state.myUser + '/' );
       userRef.child(this.state.note_ID).update({'noteSubject': title});
       userRef.child(this.state.note_ID).update({'noteDesc': description});
+      //userRef.child(this.state.note_ID).update({'imageLink': image});
+
+      const storage = firebase.storage();
+      const {picture} = this.state;
+      if (picture != null) {
+  
+        var self = this;
+        const uploadTask = storage.ref(`note_img/${picture.name}`).put(picture);
+        uploadTask.on('state_changed',
+        (snapshot) => {
+        },
+        (error) => {
+          console.log(error);
+        },
+        () => {
+          storage.ref('note_img').child(picture.name).getDownloadURL().then(uniqueLink => {
+            self.setState({uniqueLink});
+            userRef.child(this.state.note_ID).update({'imageLink': this.state.uniqueLink});
+  
+          })
+        });
+      }
 
       this.closeModal();
     };
@@ -188,6 +221,7 @@ class Note extends Component {
                   date: note,
                   subject: notes[note].noteSubject,
                   description: notes[note].noteDesc,
+                  image: notes[note].imageLink,
                   tags: notes[note].noteTags,
                   color: notes[note].color,
                 });
@@ -210,11 +244,12 @@ class Note extends Component {
     
   }
 
-  handleEdit = (noteID, title, description) => {
+  handleEdit = (noteID, title, description, image) => {
       this.state.note_title = title;
       this.state.title.value = title;
       this.state.note_description = description.split('</br>').join('\n');
       this.state.description.value = description.split('</br>').join('\n');
+      this.state.note_image = image;
       this.state.note_ID = noteID;
       this.openModal();
     };
@@ -318,11 +353,13 @@ class Note extends Component {
           <div className="note-list-container">
             <div style={{cursor:'pointer'}} onClick={this.handleExpandNote.bind(this, eachNote.date, eachNote.subject, eachNote.description, eachNote.tags)}>
               <div className="note-title">{eachNote.subject}</div>
-              <div className="note-content">{textToHtml(eachNote.description)}</div>
+              <div className="note-content">{textToHtml(eachNote.description)}
+                <img src={eachNote.image} className="note-image" />
+                  </div>
             </div>
             <div className="note-tags">{outputTags(eachNote.tags)}</div>
             <div className='note-footer'>
-              <IconButton onClick={this.handleEdit.bind(this, eachNote.date, eachNote.subject, eachNote.description)}><EditIcon/></IconButton>
+              <IconButton onClick={this.handleEdit.bind(this, eachNote.date, eachNote.subject, eachNote.description, eachNote.image)}><EditIcon/></IconButton>
               <Popup trigger={ open => (
                               <IconButton><ColorIcon/>{this.colorPopUp(open)}</IconButton>
                               )}>
@@ -338,7 +375,7 @@ class Note extends Component {
               <IconButton onClick={this.handleArchive.bind(this, eachNote.date)}>
                 <ArchiveIcon/>
               </IconButton>
-        <br/>
+              <br/>
               <Popup trigger={<IconButton><ShareIcon/></IconButton>}>
                 <form onSubmit={handleShare(eachNote.date)} className="input-form">
                   <input
@@ -381,7 +418,6 @@ class Note extends Component {
       >
         <button onClick={this.closeModal} className="close-button"><CloseIcon/></button>
           <br></br>
-          <br></br>
           <form onSubmit={this.handleSubmit} className="input-form">
             <Input
             className="title"
@@ -403,6 +439,18 @@ class Note extends Component {
             onChange={this.handleChange}
           />
           <br></br>
+          <div className="center">
+                            <div className="file-field input-field">
+                              <div className="btn">
+                                <span>Upload image: </span>
+                                <Input 
+                                type="file"
+                                name="image"
+                                defaultValue={this.state.note_image}
+                                onChange={this.handleChange} />
+                              </div>
+                            </div>
+                            </div>
           <br></br>
           <Button>Done</Button>
         </form>

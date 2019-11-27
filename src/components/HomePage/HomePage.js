@@ -9,6 +9,7 @@ import Note from '../Notes/Note';
 import SharedNotes from '../SharedNotes/SharedNotes';
 import Archive from '../Archive/Archive';
 import Trash from '../Trash/Trash';
+import ImageUpload from '../Image/Image';
 import {updateShared} from '../SharedNotes/SharedNotes'
 
 var self;
@@ -66,7 +67,7 @@ class HomePage extends Component{
       <div className="Trash">
         <Trash/>
       </div>
-    </div>
+      </div>
     </div>
   );
   }
