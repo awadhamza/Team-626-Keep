@@ -285,27 +285,29 @@ class Trash extends Component {
           var targetRef = firebase.database().ref('notes/' + this.state.myUser + '/').once('value', function(snapshot) {
               snapshot.forEach(function(childSnapshot) {
                   //alert("checking note#: " + childSnapshot.key);
-                  var noteTags = childSnapshot.val().noteTags;
+                  if(childSnapshot.val().isArchived == "False" && childSnapshot.val().isTrash == "True"){
+                      var noteTags = childSnapshot.val().noteTags;
 
-                  var sepTags = "";
+                      var sepTags = "";
 
-                  if(noteTags.length > 2){
-                    sepTags = noteTags.replace(/"/g, '').replace(/\[/g, '').replace(/\]/g, '');
-                  }
+                      if(noteTags.length > 2){
+                        sepTags = noteTags.replace(/"/g, '').replace(/\[/g, '').replace(/\]/g, '');
+                      }
 
-                  var testArr = String(sepTags).split(',');
+                      var testArr = String(sepTags).split(',');
 
-                  // For this note, check if there is a tag with substr of tagSearch
-                  for(let tag in testArr){
-                      if(testArr[tag].toLowerCase().includes(tagSearch)){
-                            detail.push({
-                              date: childSnapshot.key,
-                              subject: childSnapshot.val().noteSubject,
-                              description: childSnapshot.val().noteDesc,
-                              tags: childSnapshot.val().noteTags,
-                              color: childSnapshot.val().color,
-                            });
-                          break;
+                      // For this note, check if there is a tag with substr of tagSearch
+                      for(let tag in testArr){
+                          if(testArr[tag].toLowerCase().includes(tagSearch)){
+                                detail.push({
+                                  date: childSnapshot.key,
+                                  subject: childSnapshot.val().noteSubject,
+                                  description: childSnapshot.val().noteDesc,
+                                  tags: childSnapshot.val().noteTags,
+                                  color: childSnapshot.val().color,
+                                });
+                              break;
+                          }
                       }
                   }
               });
