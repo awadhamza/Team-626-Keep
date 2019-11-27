@@ -359,7 +359,7 @@ class Note extends Component {
             </div>
             <div className="note-tags">{outputTags(eachNote.tags)}</div>
             <div className='note-footer'>
-              <IconButton onClick={this.handleEdit.bind(this, eachNote.date, eachNote.subject, eachNote.description)}><EditIcon/></IconButton>
+              <IconButton onClick={this.handleEdit.bind(this, eachNote.date, eachNote.subject, eachNote.description, eachNote.image)}><EditIcon/></IconButton>
               <Popup trigger={ open => (
                               <IconButton><ColorIcon/>{this.colorPopUp(open)}</IconButton>
                               )}>
@@ -375,8 +375,7 @@ class Note extends Component {
               <IconButton onClick={this.handleArchive.bind(this, eachNote.date)}>
                 <ArchiveIcon/>
               </IconButton>
-              <IconButton onClick={this.handleEdit.bind(this, eachNote.date, eachNote.subject, eachNote.description, eachNote.image)}><EditIcon/></IconButton>
-        <br/>
+              <br/>
               <Popup trigger={<IconButton><ShareIcon/></IconButton>}>
                 <form onSubmit={handleShare(eachNote.date)} className="input-form">
                   <input
