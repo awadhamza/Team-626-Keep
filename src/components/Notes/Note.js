@@ -116,6 +116,8 @@ class Note extends Component {
     this.closeModal = this.closeModal.bind(this);
     this.openExpandModal = this.openExpandModal.bind(this);
     this.closeExpandModal = this.closeExpandModal.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   };
     
   paintNotes() {
@@ -446,7 +448,7 @@ class Note extends Component {
                                 <Input 
                                 type="file"
                                 name="image"
-                                defaultValue={this.state.note_image}
+                                //defaultValue={this.state.note_image}
                                 onChange={this.handleChange} />
                               </div>
                             </div>
