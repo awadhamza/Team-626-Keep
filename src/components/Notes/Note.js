@@ -574,6 +574,7 @@ class Note extends Component {
                               date: childSnapshot.key,
                               subject: childSnapshot.val().noteSubject,
                               description: childSnapshot.val().noteDesc,
+                              image: childSnapshot.val().imageLink,
                               tags: childSnapshot.val().noteTags,
                               color: childSnapshot.val().color,
                             });
