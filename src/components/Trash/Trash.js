@@ -141,15 +141,20 @@ class Trash extends Component {
     }
     return (
     <div>
+        <div className="intro-header">
+        Your Recycled Notes:
+        </div>
       <div>
-        <p>Filter by:</p>
-        <Button onClick={this.filterRecent.bind(this)}>Most Recent</Button>
-        <Button onClick={this.filterAlphabetical.bind(this)}>Alphabetical</Button>
-        <input
-          placeholder='Search by tag'
-          type='text'
-          onChange={this.searchTagHandler.bind(this)}
-        />
+        <div className="filtering-section">
+            <p>Filter by:</p>
+            <Button onClick={this.filterRecent.bind(this)}>Most Recent</Button>
+            <Button onClick={this.filterAlphabetical.bind(this)}>Alphabetical</Button>
+            <input
+              placeholder='Search by tag'
+              type='text'
+              onChange={this.searchTagHandler.bind(this)}
+            />
+          </div>
         <br/>
         <Button onClick={this.handleEmptyTrash.bind(this)}>Empty Trash</Button>
       </div>

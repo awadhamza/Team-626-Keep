@@ -1,4 +1,12 @@
+.filtering-section button {
+    padding: 7px;
+    margin-right: 7px;
+}
 
+.filtering-section input {
+    padding: 7px;
+    
+}
 .note-title {
   font-size: 14px;
   padding-top: 10px;

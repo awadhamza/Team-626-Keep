@@ -140,15 +140,20 @@ class Archive extends Component {
     }
     return (
     <div>
+        <div className="intro-header">
+        Your Archived Notes:
+        </div>
       <div>
-        <p>Filter by:</p>
-        <Button onClick={this.filterRecent.bind(this)}>Most Recent</Button>
-        <Button onClick={this.filterAlphabetical.bind(this)}>Alphabetical</Button>
-        <input
-          placeholder='Search by tag'
-          type='text'
-          onChange={this.searchTagHandler.bind(this)}
-        />
+        <div className="filtering-section">
+            <p>Filter by:</p>
+            <Button onClick={this.filterRecent.bind(this)}>Most Recent</Button>
+            <Button onClick={this.filterAlphabetical.bind(this)}>Alphabetical</Button>
+            <input
+              placeholder='Search by tag'
+              type='text'
+              onChange={this.searchTagHandler.bind(this)}
+            />
+          </div>
       </div>
       {this.state.notes.map((eachNote) => {
         return (

@@ -51,7 +51,7 @@ class HomePage extends Component{
     <div className="Toolbar">
       <ResponsiveDrawer/>
       <div className="Title">
-          Welcome, {this.state.myUser} !
+          Welcome, {this.state.myUser}!
       </div>
       <br/>  
       <div className="Notes">

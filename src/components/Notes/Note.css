@@ -2,6 +2,36 @@
 @import url('https://fonts.googleapis.com/css?family=Merriweather&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Oswald&display=swap');
 
+Button {
+    font-family: 'Poppins', serif;
+    border-style: none;
+    border-radius: 5px;
+    border-style: groove;
+}
+
+p {
+    font-size: 18px;
+    font-family: 'Poppins', serif;
+}
+
+Button:hover {
+    cursor: pointer;
+    border-style: none;
+    border-radius: 5px;
+    border-style: groove;
+}
+
+.intro-header {
+    font-size: 30px;
+    font-family: 'Merriweather', serif;
+    vertical-align: middle;
+}
+
+.intro-header header-icon {
+    background-color: grey;
+    height: 100px;
+}
+
 .filtering-section button {
     padding: 7px;
     margin-right: 7px;
