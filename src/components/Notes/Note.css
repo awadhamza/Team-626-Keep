@@ -7,6 +7,7 @@ Button {
     border-style: none;
     border-radius: 5px;
     border-style: groove;
+    background-color: #EEE;
 }
 
 p {
@@ -15,11 +16,21 @@ p {
 }
 
 Button:hover {
+    transition: 0.4s;
     cursor: pointer;
     border-style: none;
     border-radius: 5px;
     border-style: groove;
 }
+.note-footer Button:hover {
+    transition: 0.4s;
+    cursor: pointer;
+    border-style: none;
+    border-radius: 5px;
+    border-style: groove;
+    box-shadow: 5px 5px 1px;
+}
+
 
 .intro-header {
     font-size: 30px;
