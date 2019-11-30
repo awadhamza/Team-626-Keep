@@ -210,7 +210,6 @@ class Composer extends Component {
 
     return (
       <div className="composer-container">
-
       <div>
                 <button onClick={this.openModal}>Add Note <AddIcon className="addIcon"/></button>
                 <Modal

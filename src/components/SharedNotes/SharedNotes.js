@@ -16,10 +16,8 @@ const customStyles = {
     left                  : '50%',
     right                 : 'auto',
     bottom                : 'auto',
-    width                 : '50%',
-    height                 : '50%',
-    marginRight           : '-50%',
-    transform             : 'translate(-50%, -50%)'
+    width                 : '200%',
+    height                 : '200%',
   }
 };
 
@@ -162,6 +160,9 @@ class SharedNotes extends Component {
     }
     return (
     <div>
+        <div className="intro-header">
+        Notes Shared With You:
+        </div>
       <div className="filtering-section">
         <p>Filter by:</p>
         <Button onClick={this.filterRecent.bind(this)}>Most Recent</Button>

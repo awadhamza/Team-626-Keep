@@ -2,6 +2,57 @@
 @import url('https://fonts.googleapis.com/css?family=Merriweather&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Oswald&display=swap');
 
+Button {
+    font-family: 'Poppins', serif;
+    border-style: none;
+    border-radius: 5px;
+    border-style: groove;
+    background-color: #EEE;
+}
+
+p {
+    font-size: 18px;
+    font-family: 'Poppins', serif;
+}
+
+Button:hover {
+    transition: 0.4s;
+    cursor: pointer;
+    border-style: none;
+    border-radius: 5px;
+    border-style: groove;
+}
+
+.note-footer Button:hover {
+    transition: 0.4s;
+    cursor: pointer;
+    border-style: none;
+    border-radius: 5px;
+    border-style: groove;
+    box-shadow: 5px 5px 1px;
+}
+
+#root > div > div > div > div.Notes > div:nth-child(2) > div:nth-child(2) > div > div > div.note-footer > div.popup-content > form > button:hover {
+    transition: 0.4s;
+    cursor: pointer;
+    border-style: none;
+    border-radius: 5px;
+    border-style: groove;
+    box-shadow: 0px 0px 0px;
+}
+
+
+.intro-header {
+    font-size: 30px;
+    font-family: 'Merriweather', serif;
+    vertical-align: middle;
+}
+
+.intro-header header-icon {
+    background-color: grey;
+    height: 100px;
+}
+
 .filtering-section button {
     padding: 7px;
     margin-right: 7px;
