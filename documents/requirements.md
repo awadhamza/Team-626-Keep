@@ -1,5 +1,7 @@
 # Google Keep (Digital Notes)
-## Description: A web-based platform for note-taking developed by Google. On this web app, the user can write, edit, customize, and share their notes. The user can organize their notes by categorizing and archiving their notes. The notes are linked to the user’s gmail account, so it can be accessed and modified everywhere. It can also be shared to other users using their gmail accounts for cooperative note taking.
+### Description: 
+
+A web-based platform for note-taking developed by Google. On this web app, the user can write, edit, customize, and share their notes. The user can organize their notes by categorizing and archiving their notes. The notes are linked to the user’s gmail account, so it can be accessed and modified everywhere. It can also be shared to other users using their gmail accounts for cooperative note taking.
 
 ### User Stories
 **Google Authentication Account:** As a user, I would want to create login credentials to be able to utilize the websites functionality.
