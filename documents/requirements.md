@@ -36,6 +36,12 @@ A web-based platform for note-taking developed by Google. On this web app, the u
 - **Technical Note:** Notes and interactive features should be displayed on the homepage. 
 - **Feature result:** Users has a homepage where they can login, register, logout, create, delete, tag, archive, pin and share notes (UI). 
 
+## Note Filter
+- **Purpose:** Users want to apply a note filter to change the display of notes.
+- **Database dependencies:** List of notes in the database are processed and moved to reflect the logic of the selected filter. 
+- **Technical Note:** Notes need to be fully filtered before refreshing in the homepage when a filter is applied. 
+- **Feature result:** Users can filter their notes based on alphabetical subject and recently created notes.
+
 ### Add/Delete Note
 - **Purpose:** Users need to keep memory of information in a digital note that they can access. <br/>
 - **Database Dependencies:** The database stores the created note with the associated user ID and login email. The database removes the note selected by the user to be deleted and dissociates it with the user’s ID and login email.<br/>
