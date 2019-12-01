@@ -60,6 +60,12 @@ A web-based platform for note-taking developed by Google. On this web app, the u
 - **Technical Note:** The note must exist and once I make the changes I want, the database should update the note and store those changes.<br/>
 - **Feature Result:** The existing note’s old content is replaced with the edited content that the user wanted and is reflected on the users homepage.<br/>
 
+### Archive
+- **Purpose:** User wants to temporarily set a digital note aside from the main page.<br/>
+- **Database dependencies:** An event is triggered which references the targeted note’s ID in the database. Using the note’s ID, the system updates the archive state of the note and sends it to the archive sub database.<br/>
+- **Technical Note:** Archived notes need to be able to be restored back into the homepage.<br/>
+- **Feature result:** The user can view archived notes in another page and restore it back to the homepage by clicking the archive button.<br/>
+
 ### Search By Tag
 - **Purpose:** Users want to identify and locate their notes by adding search tags.<br/>
 - **Database Dependencies:** When a user adds tags, the database needs to find the particular note and store the associated tags with the specific note.<br/>
