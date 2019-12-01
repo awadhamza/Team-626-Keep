@@ -66,6 +66,12 @@ A web-based platform for note-taking developed by Google. On this web app, the u
 - **Technical Note:** Archived notes need to be able to be restored back into the homepage.<br/>
 - **Feature result:** The user can view archived notes in another page and restore it back to the homepage by clicking the archive button.<br/>
 
+### Upload Image
+- **Purpose:** If necessary, users want to be able to add displaying images in their digital notes for effective note taking.<br/>
+- **Database dependencies:** The note’s ID is referenced in which the note is updated with the link to the uploaded image in the database.<br/>
+- **Technical Note:** The image must be .png and jpg. An image can be uploaded when a note is being composed.<br/>
+- **Feature result:** The user can upload images from a finder and display them on the selected note.<br/>
+
 ### Search By Tag
 - **Purpose:** Users want to identify and locate their notes by adding search tags.<br/>
 - **Database Dependencies:** When a user adds tags, the database needs to find the particular note and store the associated tags with the specific note.<br/>
