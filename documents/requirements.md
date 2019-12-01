@@ -18,6 +18,11 @@ A web-based platform for note-taking developed by Google. On this web app, the u
 **10. Search By Tag:** As a user, I want to be able to identify and locate my notes by adding search tags.<br/>
 
 ## User Requirements & Functional Requirements Breakdown
+### Google Authentication Account
+- **Purpose:** Users want to start using GoogleKeep through a simple authentication process.
+- **Database dependencies:** To authenticate a user, the database needs to register the user associated to his/her email .
+- **Technical Note:** Users need an existing email to create their login. They cannot use a registered email already in GoogleKeep database to create a new login.
+- **Feature Result:** User can use an email to create login credentials to be able to utilize GoogleKeep’s functionality.
 
 ### Add/Delete Note
 - **Purpose:** Users need to keep memory of information in a digital note that they can access. <br/>
