@@ -30,6 +30,12 @@ A web-based platform for note-taking developed by Google. On this web app, the u
 - **Technical Note:** GoogleKeep needs to keep the user signed in on the browser unless the logout function is called.
 - **Feature Result:** Users can log into GoogleKeep using their credentials and log out to hide their notes and account data from each other.
 
+## Homepage
+- **Purpose:** Users needs a homepage where they can have readily access to GoogleKeep’s functions.
+- **Database Dependencies:** User inputs are stored as data in different components in the database associated with the registered user.
+- **Technical Note:** Notes and interactive features should be displayed on the homepage. 
+- **Feature result:** Users has a homepage where they can login, register, logout, create, delete, tag, archive, pin and share notes (UI). 
+
 ### Add/Delete Note
 - **Purpose:** Users need to keep memory of information in a digital note that they can access. <br/>
 - **Database Dependencies:** The database stores the created note with the associated user ID and login email. The database removes the note selected by the user to be deleted and dissociates it with the user’s ID and login email.<br/>
