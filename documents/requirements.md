@@ -24,19 +24,19 @@ A web-based platform for note-taking developed by Google. On this web app, the u
 - **Technical Note:** Users need an existing email to create their login. They cannot use a registered email already in GoogleKeep database to create a new login.<br/>
 - **Feature Result:** User can use an email to create login credentials to be able to utilize GoogleKeep’s functionality.<br/>
 
-## User Account Login/Logout
+### User Account Login/Logout
 - **Purpose:** Users need a login and log out function to keep others from accessing their account details and notes.<br/>
 - **Database dependencies:** The database finds a match to the user’s email in the users list. Then, it retrieves and secures notes associated with the user’s ID and their login email. <br/>
 - **Technical Note:** GoogleKeep needs to keep the user signed in on the browser unless the logout function is called.<br/>
 - **Feature Result:** Users can log into GoogleKeep using their credentials and log out to hide their notes and account data from each other.<br/>
 
-## Homepage
+### Homepage
 - **Purpose:** Users needs a homepage where they can have readily access to GoogleKeep’s functions.<br/>
 - **Database Dependencies:** User inputs are stored as data in different components in the database associated with the registered user.<br/>
 - **Technical Note:** Notes and interactive features should be displayed on the homepage.<br/>
 - **Feature result:** Users has a homepage where they can login, register, logout, create, delete, tag, archive, pin and share notes (UI).<br/>
 
-## Note Filter
+### Note Filter
 - **Purpose:** Users want to apply a note filter to change the display of notes.<br/>
 - **Database dependencies:** List of notes in the database are processed and moved to reflect the logic of the selected filter.<br/>
 - **Technical Note:** Notes need to be fully filtered before refreshing in the homepage when a filter is applied.<br/>
@@ -48,7 +48,7 @@ A web-based platform for note-taking developed by Google. On this web app, the u
 - **Technical Note:** The note must include a subject and description. If a previously created note is no longer needed, I want to be able to discard unwanted digital notes.<br/>
 - **Feature Result:** The user can successfully create a new note which shows up on the homepage. The user can successfully delete and existing note and it no longer shows up on their homepage.<br/>
 
-## Share note
+### Share note
 - **Purpose:** Users want to be able to share digital notes with each other.<br/>
 - **Database dependencies:** GoogleKeep parses the user and recipient’s email input and directs to the database. The shared note’s ID is now referenced to both the user and the recipient’s ID.<br/>
 - **Technical Note:** If a shared note is deleted, the note is removed for both the sender and recipient.<br/>
