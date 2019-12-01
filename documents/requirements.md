@@ -17,5 +17,22 @@ A web-based platform for note-taking developed by Google. On this web app, the u
 
 ## User Requirements & Functional Requirements Breakdown
 
+### Add/Delete Note
+- **Purpose:** Users need to keep memory of information in a digital note that they can access. <br/>
+- **Database Dependencies:** The database stores the created note with the associated user ID and login email. The database removes the note selected by the user to be deleted and dissociates it with the user’s ID and login email.<br/>
+- **Technical Note:** The note must include a subject and description. If a previously created note is no longer needed, I want to be able to discard unwanted digital notes.<br/>
+- **Feature Result:** The user can successfully create a new note which shows up on the homepage. The user can successfully delete and existing note and it no longer shows up on their homepage.<br/>
+
+### Edit
+- **Purpose:** As a user who wants to revisit and modify a note, I want to make a change to a note that already exists.<br/>
+- **Database Dependencies:** The database needs to reflect the new changes that the user has made to a note. When a user chooses to edit a note, the database needs to find it in the user’s associated notes and update its contents.<br/>
+- **Technical Note:** The note must exist and once I make the changes I want, the database should update the note and store those changes.<br/>
+- **Feature Result:** The existing note’s old content is replaced with the edited content that the user wanted and is reflected on the users homepage.<br/>
+
+### Search By Tag
+- **Purpose:** Users want to identify and locate their notes by adding search tags.<br/>
+- **Database Dependencies:** When a user adds tags, the database needs to find the particular note and store the associated tags with the specific note.<br/>
+- **Technical Note:** The tags need to be stored as an element of the note so that the specific note can be filtered using the tags.<br/>
+- **Feature Result:** The user can view their notes grouped by the specific tags.<br/>
 
 
