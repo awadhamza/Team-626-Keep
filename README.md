@@ -23,6 +23,7 @@ A web-based platform for note-taking developed by Google. On this web app, the u
       - npm install react-modal
       - npm install react-color --save
       - npm install
+      
       This will take a few minutes.
 4) Once completed, run `npm start`.
 5) Team 626 Keep should be up and running!
