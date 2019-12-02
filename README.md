@@ -18,7 +18,12 @@ A web-based platform for note-taking developed by Google. On this web app, the u
 
 1) Install [NodeJS](https://nodejs.org/en/download/) installed on your system.
 2) Unzip this repository.
-3) Using a command prompt of your choice, run `npm install`. This will take a few minutes.
+3) Using a command prompt of your choice, run the following commands
+      - npm install react
+      - npm install react-modal
+      - npm install react-color --save
+      - npm install
+      This will take a few minutes.
 4) Once completed, run `npm start`.
 5) Team 626 Keep should be up and running!
 
