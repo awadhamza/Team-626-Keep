@@ -13,10 +13,10 @@
 - We didn't accomplish as much as we had thought we would at this point in time so we've reassigned and restrutured our game plan for the completion of this project.
 
 ## November 18th, 2019 (Labs 6 to 8), Scrum Master: Shreya Kumar
--
--
--
--
+- We realized some of our originally decided on features overlapped with other ones so we had to combine them.
+- We finally figurerd out how to create a note object.
+- It took a really long time to figure out how to store the notes in the database so that users can only see their own specific notes.
+- 
 -
 -
 -
