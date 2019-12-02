@@ -14,6 +14,9 @@
 - When our users do interact with these functions, our react state changes, so react efficiently calls render on all of our components. And you can see this with our side navigation tabs updating to allow user interactions as well as their styles changing; this is also true for our current and basic profile card which appears in the middle of the screen to confirm the log in or to request a log in.
 - This current version of our app requires further compartmentalizing our code in App.js so that we can render our upcoming screens more efficiently and clearly. To start on our next task which is in dealing with note creating and saving, we would need to start reconstructing some of our code to build such future features.
 
+### Diagram:
+<img src ="/images/Team626_1.jpeg" width="600"> 
+
 ## November 18th, 2019
 - So far we have had to make some adjustments to our user stories. Certain user stories overlapped with one another, such as filter by color and filter by subject, so we combined those. For this second sprint demonstration, we added the registration feature so that the user can create a new account if they don’t have an existing gmail account.
 - We began this sprint by developing our homepage for when the user logs in. Over here the user has access to a drop down menu where the user can select to view all their notes, edit notes, archive the notes or trash the notes. The add notes functionality is taken care of in the composer.js file. Here the note can be given a title and a description. These notes are stored in a container which allows individual users to have access to their own individual notes. The delete notes functionality is implemented in our Note.js file in the handleDelete() function. Deleted notes however can still be viewed in the trash tab so it's not permanently deleted until the user decides to completely empty the trash tab which is handled in the Trash.js file. 
