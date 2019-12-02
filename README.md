@@ -22,6 +22,7 @@ A web-based platform for note-taking developed by Google. On this web app, the u
       - npm install react
       - npm install react-modal
       - npm install react-color --save
+      - npm install react-dev-utils
       - npm install
       
       This will take a few minutes.
