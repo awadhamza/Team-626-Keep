@@ -16,13 +16,13 @@
 - We realized some of our originally decided on features overlapped with other ones so we had to combine them.
 - We finally figurerd out how to create a note object.
 - It took a really long time to figure out how to store the notes in the database so that users can only see their own specific notes.
-- 
--
--
--
--
--
--
+- We implemented adding/deleting notes. When a user adds a note it will show up for their specific account and when they delete, it will no longer appear.
+- All bugs for that feature have been fixed and our user interface has been further refined so everything is nicer to look at and provides a nicer user experience.
+- We've realized that the features we have implemented through the second sprint aren't complex enough.
+- We brainstormed more features that are complex enough and in doing so some of our original design ideas have become obsolete.
+- Communicating with each other throughout this entire process has made the second sprint a lot more smoother than the first sprint.
+- For this second sprint we had decided to distribute the work amongst ourselves evenly but since everyones skill level varies a lot we've decided to distribute the work based off of what everyone can accomplish well.
+- In this sprint, after the initial UI refinement, not much as been changed for the interface. Most of the work has been backend stuff.
 
 ## December 2nd, 2019 (Labs 9 to 10), Scrum Master: Huzaifah Simjee
 -
