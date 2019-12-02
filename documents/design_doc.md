@@ -15,7 +15,7 @@
 - This current version of our app requires further compartmentalizing our code in App.js so that we can render our upcoming screens more efficiently and clearly. To start on our next task which is in dealing with note creating and saving, we would need to start reconstructing some of our code to build such future features.
 
 ### Diagram:
-<img src ="/images/Team626_1.jpeg" width="600"> 
+<img src ="/images/Team626_1.jpeg" width="500"> 
 
 ## November 18th, 2019
 - So far we have had to make some adjustments to our user stories. Certain user stories overlapped with one another, such as filter by color and filter by subject, so we combined those. For this second sprint demonstration, we added the registration feature so that the user can create a new account if they don’t have an existing gmail account.
