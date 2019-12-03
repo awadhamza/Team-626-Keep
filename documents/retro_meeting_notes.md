@@ -25,13 +25,13 @@
 - In this sprint, after the initial UI refinement, not much as been changed for the interface. Most of the work has been backend stuff.
 
 ## December 2nd, 2019 (Labs 9 to 10), Scrum Master: Huzaifah Simjee
--
--
--
--
--
--
--
--
--
--
+- This sprint is where we accomplished the largest chunk of feature implementation.
+- Once we got the hang of creating notes, adding features to those notes was less of a challenge.
+- We're realizng now it would have been smarter for us to incorporate pair programming this way there would be less time being devoted to debugging.
+- Our current feature list isn't as long as our original feature list, but it is more complex.
+- We've been developing the code modularly which had made the debugging process easier and it's also made it easier for everyone to fulfil their respective tasks independently.
+- There were some formatting issues that we faced but with the materials UI extension we were able to overcome that.
+- As a group our progress is where we expected it to be. Using react and firebase was new to all of us but our improvement with working with these things has significantly increased as a group.
+- We all had a lot happening outside of this class in this sprint but we made it a point to stay on top of communication to make sure that we weren't falling behind.
+- Our hardest feature to implement has been uploading an image to the note but thankfully everything else has been taken care of.
+- Overall we're very content with the end result that we produced.
